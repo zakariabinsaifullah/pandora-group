@@ -1,0 +1,7 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "pandora/iconlist-icon-position-extension",
+    "title": "Icon List Icon Position Extension",
+    "editorScript": "file:./index.js"
+}

@@ -1,0 +1,20 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "pandora/timeline-item",
+    "version": "1.0.0",
+    "title": "Timeline Item",
+    "category": "pandora",
+    "parent": ["pandora/timeline"],
+    "icon": "star-filled",
+    "description": "Individual item for the timeline block.",
+    "example": {},
+    "supports": {
+        "anchor": true,
+        "html": false
+    },
+    "attributes": {},
+    "textdomain": "pandora-group",
+    "editorScript": "file:./index.js",
+    "style": "file:./style-index.css"
+}

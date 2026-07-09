@@ -1,0 +1,242 @@
+/* ── Slide-in Form Panel ───────────────────────────────────────────────────── */
+
+.pandora-form-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 9998;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+        opacity 0.35s ease,
+        visibility 0.35s ease;
+}
+
+.pandora-form-overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.pandora-form-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 720px;
+    background: #ffffff;
+    z-index: 99999;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.15);
+}
+
+.pandora-form-panel.is-open {
+    transform: translateX(0);
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────────── */
+
+.pandora-form-panel__header {
+    background: #009ada;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    flex-shrink: 0;
+}
+
+.pandora-form-panel__phone {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #ffffff;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.pandora-form-panel__phone:hover {
+    color: #ffffff;
+    opacity: 0.85;
+    text-decoration: none;
+}
+
+.pandora-form-panel__close {
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s ease;
+    border-radius: 0;
+}
+
+.pandora-form-panel__close:hover {
+    background: none;
+    color: #ffffff;
+    opacity: 0.7;
+}
+
+/* ── Body ────────────────────────────────────────────────────────────────────── */
+
+.pandora-form-panel__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 40px 32px 52px;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ── Tab nav ────────────────────────────────────────────────────────────────── */
+
+.pandora-form-panel__tabs {
+    display: flex;
+    justify-content: center;
+    background: #f4eddb;
+    border-radius: 50px;
+    padding: 8px;
+    margin: 0 auto 30px;
+    max-width: 360px;
+    gap: 4px;
+}
+
+.pandora-form-panel__tab {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #0d1b2a;
+    min-height: 42px;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+    font-family: inherit;
+}
+
+.pandora-form-panel__tab:hover {
+    color: #0d1b2a;
+}
+
+.pandora-form-panel__tab:focus-visible {
+    outline: 2px solid #c9a84c;
+    outline-offset: 2px;
+}
+
+.pandora-form-panel__tab.is-active {
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    color: #0d1b2a;
+}
+
+/* ── Tab panels ─────────────────────────────────────────────────────────────── */
+
+.pandora-form-panel__panel[hidden] {
+    display: none;
+}
+
+.pandora-form-panel__calendly {
+    margin-top: 8px;
+}
+
+.pandora-form-panel__calendly iframe {
+    display: block;
+    width: 100%;
+}
+
+.pandora-form-panel__title {
+    font-size: clamp(24px, 6vw, 40px);
+    font-weight: 400;
+    line-height: 1.2;
+    color: #3b3b3b;
+    margin: 0 0 16px;
+}
+
+.pandora-form-panel__desc {
+    font-size: 16px;
+    color: #4b5563;
+    line-height: 1.2;
+    margin: 0 0 20px;
+}
+
+/* ── Body scroll lock ────────────────────────────────────────────────────────── */
+
+body.pandora-panel-open {
+    overflow: hidden;
+}
+
+.gform-theme--foundation .gform_fields {
+    row-gap: 20px !important;
+}
+
+.gform-body.gform_body input,
+.gform-body.gform_body textarea,
+.gform-body.gform_body select {
+    width: 100%;
+    border-color: #d1d5db !important;
+    border-radius: 10px;
+    min-height: 50px !important;
+    font-size: 16px;
+    background: #f6f7f9 !important;
+    outline: none;
+    box-shadow: none !important;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    box-sizing: border-box;
+}
+
+.gfield_label {
+    color: #3b3b3b !important;
+    font-weight: 400 !important;
+}
+
+.gform_body input::placeholder,
+.gform_body textarea::placeholder {
+    color: #4b5563 !important;
+}
+
+.gform_body input:focus,
+.gform_body textarea:focus,
+.gform_body select:focus {
+    border-color: #9361a8 !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.gform_button.button {
+    background: #9361a8 !important;
+    color: #ffffff !important;
+    padding: 10px 24px !important;
+    border: none !important;
+    border-radius: 50px !important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+}
+
+.gform_button.button:hover {
+    background: #754d86 !important;
+    color: #fff !important;
+}
+
+label.gfield_label.gform-field-label {
+    flex-wrap: nowrap !important;
+}
+
+p.gform_required_legend {
+    display: none !important;
+}

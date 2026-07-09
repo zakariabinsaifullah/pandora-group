@@ -1,0 +1,43 @@
+.wp-block-button.craft-icon-button {
+    .wp-block-button__link {
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--craft-icon-gap, 12px) !important;
+
+        &.has-text-align-left {
+            justify-content: flex-start !important;
+        }
+
+        &.has-text-align-center {
+            justify-content: center !important;
+        }
+
+        &.has-text-align-right {
+            justify-content: flex-end !important;
+        }
+
+        .craft-icon-button-svg {
+            flex-shrink: 0;
+            pointer-events: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--craft-icon-bg-color, transparent);
+            padding: var(--craft-icon-padding, 0);
+            border-radius: 50%;
+
+            svg {
+                width: var(--craft-icon-size, 1em);
+                height: var(--craft-icon-size, 1em);
+                fill: currentColor;
+            }
+        }
+    }
+
+    &.craft-icon-before {
+        .wp-block-button__link {
+            flex-direction: row-reverse;
+        }
+    }
+}

@@ -1,0 +1,14 @@
+.wp-block-craft-timeline {
+    .craft-timeline {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0;
+        align-items: stretch;
+        position: relative;
+
+        @media (max-width: 767px) {
+            flex-direction: column;
+            gap: 16px;
+        }
+    }
+}

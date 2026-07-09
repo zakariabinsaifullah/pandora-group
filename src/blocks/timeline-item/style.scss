@@ -1,0 +1,128 @@
+.wp-block-craft-timeline-item {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+
+    &::before {
+        display: none;
+    }
+
+    .timeline-icon-row {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        width: 100%;
+        position: relative;
+        z-index: 1;
+
+        &::before,
+        &::after {
+            content: '';
+            flex: 1;
+            height: 0;
+            border-top: 1px dashed #9361a8;
+        }
+    }
+
+    // dot stays centered over its card (space reserved), but no line drawn
+    // before the first dot or after the last one
+    &:first-child .timeline-icon-row::before {
+        border-top: none;
+    }
+
+    &:last-child .timeline-icon-row::after {
+        border-top: none;
+    }
+
+    // ── Dot ───────────────────────────────────────────────────────
+    .timeline-icon {
+        flex-shrink: 0;
+        width: 18px;
+        height: 18px;
+        padding: 0;
+        border: none;
+        border-radius: 50%;
+        background: #9361a8;
+
+        svg {
+            display: none;
+        }
+    }
+
+    // ── Card: horizontal margin creates visual gap between cards ──
+    // icon-row stays full-width so lines connect; only card gets margin
+    .timeline-card {
+        margin: var(--item-gap, 16px) 12.5px 0;
+        background: #f6f6f6;
+        border-radius: 18px;
+        border: none;
+        padding: 36px 26px;
+        flex: 1;
+    }
+
+    .timeline-content {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    &:first-child .timeline-card {
+        margin-left: 0;
+    }
+
+    &:last-child .timeline-card {
+        margin-right: 0;
+    }
+
+    // ── Mobile: vertical timeline ─────────────────────────────────
+    @media (max-width: 767px) {
+        flex-direction: row;
+        align-items: stretch;
+        gap: 24px;
+        width: 100%;
+
+        .timeline-icon-row {
+            width: auto;
+            gap: 0;
+            align-items: center;
+            justify-content: center;
+
+            // vertical dot-to-dot line, reaching halfway into the
+            // gap between items so it stays continuous between cards
+            &::before,
+            &::after {
+                flex: none;
+                height: auto;
+                width: 0;
+                border-top: none;
+                border-left: 1px dashed #9361a8;
+                position: absolute;
+                left: 50%;
+            }
+
+            &::before {
+                top: -8px;
+                bottom: 50%;
+            }
+
+            &::after {
+                top: 50%;
+                bottom: -8px;
+            }
+        }
+
+        &:first-child .timeline-icon-row::before {
+            display: none;
+        }
+
+        &:last-child .timeline-icon-row::after {
+            display: none;
+        }
+
+        .timeline-card {
+            width: 100%;
+            margin: 0 !important;
+        }
+    }
+}

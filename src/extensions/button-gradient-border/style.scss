@@ -1,0 +1,40 @@
+$border: 2px;
+
+.has-gradient-border {
+    position: relative;
+    border: $border solid transparent;
+    border-radius: 100px;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: -1;
+        margin: -$border;
+        border-radius: inherit;
+        background: linear-gradient(90deg, #d800fd 0%, #1c00fd 100%);
+    }
+
+    .wp-block-button__link {
+        background: var(--wp--preset--color--pandora-primary) !important;
+
+
+        position: relative;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: -1;
+            margin: -1px;
+            border-radius: inherit;
+            background: #fff !important;
+        }
+    }
+}
