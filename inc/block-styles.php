@@ -43,6 +43,14 @@ if ( ! function_exists( 'pandora_block_styles' ) ) :
 				'label' => __( 'Gradient Text', 'pandora-group' ),
 			)
 		);
+
+		register_block_style(
+			'core/button',
+			array(
+				'name'  => 'link',
+				'label' => __( 'Link', 'pandora-group' ),
+			)
+		);
 	}
 endif;
 add_action( 'init', 'pandora_block_styles' );
