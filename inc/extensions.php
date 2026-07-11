@@ -1770,3 +1770,114 @@ if ( ! function_exists( 'pandora_render_kadence_featured_bg' ) ) :
 	}
 endif;
 add_filter( 'render_block', 'pandora_render_kadence_featured_bg', 10, 2 );
+
+
+// =============================================================================
+// Kadence RowLayout — Overlay Image Extension
+// =============================================================================
+
+if ( ! function_exists( 'pandora_enqueue_kadence_overlay_editor_assets' ) ) :
+	/**
+	 * Enqueues the kadence-overlay extension script and editor stylesheet.
+	 */
+	function pandora_enqueue_kadence_overlay_editor_assets() {
+		$asset_file = get_theme_file_path( 'build/extensions/kadence-overlay/index.asset.php' );
+
+		if ( ! file_exists( $asset_file ) ) {
+			return;
+		}
+
+		$assets = require $asset_file;
+
+		wp_enqueue_script(
+			'pandora-kadence-overlay-extension',
+			get_theme_file_uri( 'build/extensions/kadence-overlay/index.js' ),
+			$assets['dependencies'],
+			$assets['version'],
+			true
+		);
+
+		$editor_css = get_theme_file_path( 'build/extensions/kadence-overlay/index.css' );
+		if ( file_exists( $editor_css ) ) {
+			wp_enqueue_style(
+				'pandora-kadence-overlay-extension',
+				get_theme_file_uri( 'build/extensions/kadence-overlay/index.css' ),
+				array(),
+				$assets['version']
+			);
+		}
+	}
+endif;
+add_action( 'enqueue_block_editor_assets', 'pandora_enqueue_kadence_overlay_editor_assets' );
+
+
+if ( ! function_exists( 'pandora_enqueue_kadence_overlay_frontend_assets' ) ) :
+	/**
+	 * Enqueues the kadence-overlay frontend stylesheet.
+	 */
+	function pandora_enqueue_kadence_overlay_frontend_assets() {
+		$asset_file = get_theme_file_path( 'build/extensions/kadence-overlay/index.asset.php' );
+		$style_file = get_theme_file_path( 'build/extensions/kadence-overlay/style-index.css' );
+
+		if ( ! file_exists( $asset_file ) || ! file_exists( $style_file ) ) {
+			return;
+		}
+
+		$assets = require $asset_file;
+
+		wp_enqueue_style(
+			'pandora-kadence-overlay-extension-style',
+			get_theme_file_uri( 'build/extensions/kadence-overlay/style-index.css' ),
+			array(),
+			$assets['version']
+		);
+	}
+endif;
+add_action( 'enqueue_block_assets', 'pandora_enqueue_kadence_overlay_frontend_assets' );
+
+
+if ( ! function_exists( 'pandora_render_kadence_overlay' ) ) :
+	/**
+	 * Injects the `has-kadence-overlay` class and overlay CSS custom properties
+	 * into kadence/rowlayout blocks on the frontend when an overlay image is set.
+	 *
+	 * @param string $block_content The rendered block HTML.
+	 * @param array  $block         The block data including name and attributes.
+	 * @return string Modified block HTML.
+	 */
+	function pandora_render_kadence_overlay( $block_content, $block ) {
+		if ( 'kadence/rowlayout' !== ( $block['blockName'] ?? '' ) ) {
+			return $block_content;
+		}
+
+		$attrs     = $block['attrs'] ?? array();
+		$image_url = $attrs['kadenceOverlayImageUrl'] ?? '';
+
+		if ( empty( $image_url ) || empty( $block_content ) ) {
+			return $block_content;
+		}
+
+		$left = $attrs['kadenceOverlayLeft'] ?? '0px';
+		$top  = $attrs['kadenceOverlayTop']  ?? '0px';
+
+		$processor = new WP_HTML_Tag_Processor( $block_content );
+		if ( $processor->next_tag() ) {
+			$processor->add_class( 'has-kadence-overlay' );
+
+			$existing_style = $processor->get_attribute( 'style' ) ?? '';
+			$new_style      = rtrim( $existing_style, '; ' );
+			if ( $new_style ) {
+				$new_style .= ';';
+			}
+			$new_style .= '--pandora-koverlay-image:url(' . esc_url( $image_url ) . ')';
+			$new_style .= ';--pandora-koverlay-left:'  . esc_attr( $left );
+			$new_style .= ';--pandora-koverlay-top:'   . esc_attr( $top );
+			$processor->set_attribute( 'style', $new_style );
+
+			return $processor->get_updated_html();
+		}
+
+		return $block_content;
+	}
+endif;
+add_filter( 'render_block', 'pandora_render_kadence_overlay', 10, 2 );
