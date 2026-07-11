@@ -1,0 +1,117 @@
+$timeline-alt-accent: #7c3aed;
+$timeline-alt-line-gradient: linear-gradient(180deg, #c30efd 0%, #2c57ff 100%);
+
+.wp-block-pandora-timeline-alt-item {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 48px 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 25px;
+    width: 100%;
+    .timeline-alt-label {
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: center;
+        width: max-content;
+        max-width: 200px;
+        white-space: pre-line;
+        margin-bottom: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.4;
+        text-align: center;
+        color: $timeline-alt-accent;
+    }
+
+    .timeline-alt-center {
+        grid-column: 2;
+        grid-row: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .timeline-alt-line {
+        flex: 1 1 auto;
+        width: 1px;
+        margin-top: -2px;
+        background: $timeline-alt-line-gradient;
+        position: relative;
+        &::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 1px;
+            height: calc(var(--item-gap, 48px) - 10px);
+            background: $timeline-alt-line-gradient;
+        }
+    }
+
+    &.is-last-item .timeline-alt-line {
+        display: none;
+    }
+
+    .timeline-alt-icon {
+        flex: none;
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #fdfcff 0%, #dfd6ff 100%);
+        border: 1px solid #ffffff;
+        color: $timeline-alt-accent;
+
+        svg {
+            display: block;
+            width: 28px;
+            height: 28px;
+            fill: currentColor;
+            stroke: currentColor;
+        }
+    }
+    // ── Content: right side by default, swaps to the left column on
+    // every 2nd item so it reads as an alternating timeline ──────────
+    .timeline-alt-content {
+        grid-column: 3;
+        grid-row: 2;
+        min-width: 0;
+    }
+
+    &.is-even-item .timeline-alt-content {
+        grid-column: 1;
+    }
+
+    // ── Mobile: collapse to a single icon-left / content-right column ─
+    @media (max-width: 767px) {
+        grid-template-columns: 48px 1fr;
+        column-gap: 20px;
+
+        // centering this over the narrow 48px icon column (like on
+        // desktop) makes it overflow equally in both directions — on a
+        // phone-width screen there's no room for that on the left, so
+        // it was getting clipped by the edge of the viewport. Full
+        // width and left-aligned above the icon avoids that entirely.
+        .timeline-alt-label {
+            grid-column: 1 / -1;
+            grid-row: 1;
+            justify-self: start;
+            width: auto;
+            max-width: none;
+            text-align: left;
+        }
+
+        // grid-row stays 2 here, inherited from the base rules above —
+        // only the column changes on mobile
+        .timeline-alt-center {
+            grid-column: 1;
+        }
+
+        .timeline-alt-content,
+        &.is-even-item .timeline-alt-content {
+            grid-column: 2;
+        }
+    }
+}

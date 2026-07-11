@@ -1,128 +1,94 @@
-.wp-block-craft-timeline-item {
-    flex: 1;
-    min-width: 0;
+.wp-block-pandora-timeline-item {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 19px;
+    width: 100%;
 
     &::before {
         display: none;
     }
-
     .timeline-icon-row {
-        display: flex;
-        align-items: center;
-        gap: 0;
-        width: 100%;
+        flex: none;
+        width: 48px;
         position: relative;
         z-index: 1;
 
         &::before,
         &::after {
             content: '';
-            flex: 1;
-            height: 0;
-            border-top: 1px dashed #9361a8;
+            position: absolute;
+            left: 50%;
+            width: 1px;
+            transform: translateX(-50%);
+            background: linear-gradient(180deg, #c30efd 0%, #2c57ff 100%);
+        }
+        &::before {
+            top: calc(-1 * var(--item-gap, 32px) / 2);
+            height: calc((var(--item-gap, 32px) / 2) - 8px);
+        }
+
+        // starts 8px below the icon (0px top offset + 48px icon height
+        // + 8px gap) and reaches down to the container's bottom edge
+        &::after {
+            top: 56px;
+            bottom: calc(-1 * var(--item-gap, 32px) / 2);
         }
     }
 
-    // dot stays centered over its card (space reserved), but no line drawn
-    // before the first dot or after the last one
-    &:first-child .timeline-icon-row::before {
-        border-top: none;
+    &:first-child .timeline-icon-row {
+        &::before {
+            display: none;
+        }
+
+        // shifted down to stay 8px below the first item's 24px-offset icon
+        &::after {
+            top: 80px;
+        }
     }
 
     &:last-child .timeline-icon-row::after {
-        border-top: none;
+        display: none;
     }
 
-    // ── Dot ───────────────────────────────────────────────────────
+    &:first-child .timeline-icon {
+        top: 24px;
+    }
+
+    // ── Icon circle ───────────────────────────────────────────────
     .timeline-icon {
-        flex-shrink: 0;
-        width: 18px;
-        height: 18px;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
         padding: 0;
         border: none;
         border-radius: 50%;
-        background: #9361a8;
+        background: #080046;
+        color: #fff;
 
         svg {
-            display: none;
+            display: block;
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            stroke: currentColor;
         }
     }
 
-    // ── Card: horizontal margin creates visual gap between cards ──
-    // icon-row stays full-width so lines connect; only card gets margin
+    // ── Card ─────────────────────────────────────────────────────
     .timeline-card {
-        margin: var(--item-gap, 16px) 12.5px 0;
-        background: #f6f6f6;
-        border-radius: 18px;
-        border: none;
-        padding: 36px 26px;
         flex: 1;
+        min-width: 0;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.08);
+        padding: 32px;
     }
 
-    .timeline-content {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    &:first-child .timeline-card {
-        margin-left: 0;
-    }
-
-    &:last-child .timeline-card {
-        margin-right: 0;
-    }
-
-    // ── Mobile: vertical timeline ─────────────────────────────────
-    @media (max-width: 767px) {
-        flex-direction: row;
-        align-items: stretch;
-        gap: 24px;
-        width: 100%;
-
-        .timeline-icon-row {
-            width: auto;
-            gap: 0;
-            align-items: center;
-            justify-content: center;
-
-            // vertical dot-to-dot line, reaching halfway into the
-            // gap between items so it stays continuous between cards
-            &::before,
-            &::after {
-                flex: none;
-                height: auto;
-                width: 0;
-                border-top: none;
-                border-left: 1px dashed #9361a8;
-                position: absolute;
-                left: 50%;
-            }
-
-            &::before {
-                top: -8px;
-                bottom: 50%;
-            }
-
-            &::after {
-                top: 50%;
-                bottom: -8px;
-            }
-        }
-
-        &:first-child .timeline-icon-row::before {
-            display: none;
-        }
-
-        &:last-child .timeline-icon-row::after {
-            display: none;
-        }
-
-        .timeline-card {
-            width: 100%;
-            margin: 0 !important;
-        }
-    }
 }
