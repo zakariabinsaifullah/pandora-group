@@ -26,5 +26,11 @@
                 width: 100px;
                 height: 70px;
             }
+
+            .kt-inside-inner-col {
+                &::before {
+                    display: none !important;
+                }
+            }
         }
     }
