@@ -8,12 +8,13 @@
  */
 import { __ } from '@wordpress/i18n';
 import { addFilter } from '@wordpress/hooks';
-import { InspectorControls, MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
+import { InspectorAdvancedControls, MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 import {
     PanelBody,
     Button,
     __experimentalUnitControl as UnitControl,
     __experimentalHStack as HStack,
+    BaseControl,
 } from '@wordpress/components';
 import { createHigherOrderComponent } from '@wordpress/compose';
 
@@ -75,12 +76,11 @@ addFilter(
             return (
                 <>
                     <BlockEdit { ...props } />
-                    <InspectorControls>
-                        <PanelBody
-                            title={ __( 'Overlay Image', 'pandora-group' ) }
-                            initialOpen={ false }
-                        >
-                            <MediaUploadCheck>
+                    <InspectorAdvancedControls>
+                            <BaseControl
+                                label={__('Additional Overlay Image', 'pandora-group')}
+                            >
+                                <MediaUploadCheck>
                                 <MediaUpload
                                     onSelect={ media =>
                                         setAttributes( {
@@ -137,30 +137,31 @@ addFilter(
                                         </div>
                                     ) }
                                 />
-                            </MediaUploadCheck>
+                                </MediaUploadCheck>
 
-                            { kadenceOverlayImageUrl && (
-                                <HStack style={ { marginTop: '16px' } } spacing={ 3 }>
-                                    <UnitControl
-                                        label={ __( 'Left', 'pandora-group' ) }
-                                        value={ kadenceOverlayLeft }
-                                        units={ unitOptions }
-                                        onChange={ value =>
-                                            setAttributes( { kadenceOverlayLeft: value || '0px' } )
-                                        }
-                                    />
-                                    <UnitControl
-                                        label={ __( 'Top', 'pandora-group' ) }
-                                        value={ kadenceOverlayTop }
-                                        units={ unitOptions }
-                                        onChange={ value =>
-                                            setAttributes( { kadenceOverlayTop: value || '0px' } )
-                                        }
-                                    />
-                                </HStack>
-                            ) }
-                        </PanelBody>
-                    </InspectorControls>
+                                { kadenceOverlayImageUrl && (
+                                    <HStack style={ { marginTop: '16px' } } spacing={ 3 }>
+                                        <UnitControl
+                                            label={ __( 'Left', 'pandora-group' ) }
+                                            value={ kadenceOverlayLeft }
+                                            units={ unitOptions }
+                                            onChange={ value =>
+                                                setAttributes( { kadenceOverlayLeft: value || '0px' } )
+                                            }
+                                        />
+                                        <UnitControl
+                                            label={ __( 'Top', 'pandora-group' ) }
+                                            value={ kadenceOverlayTop }
+                                            units={ unitOptions }
+                                            onChange={ value =>
+                                                setAttributes( { kadenceOverlayTop: value || '0px' } )
+                                            }
+                                        />
+                                    </HStack>
+                                ) }
+                            </BaseControl>
+                            
+                    </InspectorAdvancedControls>
                 </>
             );
         };

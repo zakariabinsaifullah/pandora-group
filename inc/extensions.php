@@ -269,73 +269,6 @@ add_filter( 'render_block', 'pandora_render_group_full_height', 10, 2 );
 
 
 // =============================================================================
-// Group / Row Layout – Glass Effect Extension
-// =============================================================================
-
-if ( ! function_exists( 'pandora_enqueue_glass_effect_editor_assets' ) ) :
-	/**
-	 * Enqueues the glass-effect extension script.
-	 * Runs on `enqueue_block_editor_assets` (editor only). The frontend/editor CSS
-	 * for `.has-glass-effect` already lives in the globally enqueued blocks.css.
-	 */
-	function pandora_enqueue_glass_effect_editor_assets() {
-		$asset_file = get_theme_file_path( 'build/extensions/glass-effect/index.asset.php' );
-
-		if ( ! file_exists( $asset_file ) ) {
-			return;
-		}
-
-		$assets = require $asset_file;
-
-		wp_enqueue_script(
-			'pandora-glass-effect-extension',
-			get_theme_file_uri( 'build/extensions/glass-effect/index.js' ),
-			$assets['dependencies'],
-			$assets['version'],
-			true
-		);
-	}
-endif;
-add_action( 'enqueue_block_editor_assets', 'pandora_enqueue_glass_effect_editor_assets' );
-
-
-if ( ! function_exists( 'pandora_render_glass_effect' ) ) :
-	/**
-	 * Injects the `has-glass-effect` class into core/group and kadence/rowlayout
-	 * blocks on the frontend when the `glassEffectEnabled` attribute is enabled.
-	 *
-	 * @param string $block_content The rendered block HTML.
-	 * @param array  $block         The block data including name and attributes.
-	 * @return string Modified block HTML.
-	 */
-	function pandora_render_glass_effect( $block_content, $block ) {
-		$allowed_blocks = array( 'core/group', 'kadence/rowlayout', 'kadence/column' );
-
-		if ( ! in_array( $block['blockName'] ?? '', $allowed_blocks, true ) ) {
-			return $block_content;
-		}
-
-		if ( empty( $block['attrs']['glassEffectEnabled'] ) ) {
-			return $block_content;
-		}
-
-		if ( empty( $block_content ) ) {
-			return $block_content;
-		}
-
-		$processor = new WP_HTML_Tag_Processor( $block_content );
-		if ( $processor->next_tag() ) {
-			$processor->add_class( 'has-glass-effect' );
-			return $processor->get_updated_html();
-		}
-
-		return $block_content;
-	}
-endif;
-add_filter( 'render_block', 'pandora_render_glass_effect', 10, 2 );
-
-
-// =============================================================================
 // Group – Overlay Background Extension
 // =============================================================================
 
@@ -1881,3 +1814,89 @@ if ( ! function_exists( 'pandora_render_kadence_overlay' ) ) :
 	}
 endif;
 add_filter( 'render_block', 'pandora_render_kadence_overlay', 10, 2 );
+
+
+// =============================================================================
+// Kadence Column — Quote Area Extension
+// =============================================================================
+
+if ( ! function_exists( 'pandora_enqueue_kadence_quote_area_editor_assets' ) ) :
+	/**
+	 * Enqueues the kadence-quote-area extension script.
+	 * Runs on `enqueue_block_editor_assets` (editor only).
+	 */
+	function pandora_enqueue_kadence_quote_area_editor_assets() {
+		$asset_file = get_theme_file_path( 'build/extensions/kadence-quote-area/index.asset.php' );
+
+		if ( ! file_exists( $asset_file ) ) {
+			return;
+		}
+
+		$assets = require $asset_file;
+
+		wp_enqueue_script(
+			'pandora-kadence-quote-area-extension',
+			get_theme_file_uri( 'build/extensions/kadence-quote-area/index.js' ),
+			$assets['dependencies'],
+			$assets['version'],
+			true
+		);
+	}
+endif;
+add_action( 'enqueue_block_editor_assets', 'pandora_enqueue_kadence_quote_area_editor_assets' );
+
+
+if ( ! function_exists( 'pandora_enqueue_kadence_quote_area_frontend_assets' ) ) :
+	/**
+	 * Enqueues the kadence-quote-area frontend stylesheet.
+	 * Runs on `enqueue_block_assets` (editor + front end).
+	 */
+	function pandora_enqueue_kadence_quote_area_frontend_assets() {
+		$asset_file = get_theme_file_path( 'build/extensions/kadence-quote-area/index.asset.php' );
+		$style_file = get_theme_file_path( 'build/extensions/kadence-quote-area/style-index.css' );
+
+		if ( ! file_exists( $asset_file ) || ! file_exists( $style_file ) ) {
+			return;
+		}
+
+		$assets = require $asset_file;
+
+		wp_enqueue_style(
+			'pandora-kadence-quote-area-extension-style',
+			get_theme_file_uri( 'build/extensions/kadence-quote-area/style-index.css' ),
+			array(),
+			$assets['version']
+		);
+	}
+endif;
+add_action( 'enqueue_block_assets', 'pandora_enqueue_kadence_quote_area_frontend_assets' );
+
+
+if ( ! function_exists( 'pandora_render_kadence_quote_area' ) ) :
+	/**
+	 * Injects the `pandora-quote` class into kadence/column blocks on the
+	 * frontend when the `quoteAreaEnabled` attribute is true.
+	 *
+	 * @param string $block_content The rendered block HTML.
+	 * @param array  $block         The block data including name and attributes.
+	 * @return string Modified block HTML.
+	 */
+	function pandora_render_kadence_quote_area( $block_content, $block ) {
+		if ( 'kadence/column' !== ( $block['blockName'] ?? '' ) ) {
+			return $block_content;
+		}
+
+		if ( empty( $block['attrs']['quoteAreaEnabled'] ) || empty( $block_content ) ) {
+			return $block_content;
+		}
+
+		$processor = new WP_HTML_Tag_Processor( $block_content );
+		if ( $processor->next_tag() ) {
+			$processor->add_class( 'pandora-quote' );
+			return $processor->get_updated_html();
+		}
+
+		return $block_content;
+	}
+endif;
+add_filter( 'render_block', 'pandora_render_kadence_quote_area', 10, 2 );

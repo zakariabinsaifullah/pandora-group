@@ -7,7 +7,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { addFilter } from '@wordpress/hooks';
-import { InspectorControls } from '@wordpress/block-editor';
+import { InspectorAdvancedControls } from '@wordpress/block-editor';
 import { PanelBody } from '@wordpress/components';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { useSelect } from '@wordpress/data';
@@ -64,8 +64,7 @@ addFilter(
             return (
                 <>
                     <BlockEdit {...props} />
-                    <InspectorControls>
-                        <PanelBody title={__('Featured Image Background', 'pandora-group')} initialOpen={false}>
+                    <InspectorAdvancedControls>
                             <NativeToggleControl
                                 label={__('Use Featured Image as Background', 'pandora-group')}
                                 checked={!!attributes[ATTRIBUTE]}
@@ -76,8 +75,7 @@ addFilter(
                                     {__('No featured image set for this post.', 'pandora-group')}
                                 </p>
                             )}
-                        </PanelBody>
-                    </InspectorControls>
+                    </InspectorAdvancedControls>
                 </>
             );
         };
