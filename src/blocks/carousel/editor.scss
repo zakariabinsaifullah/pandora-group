@@ -10,7 +10,7 @@
     }
 }
 
-.craft-editor-slides {
+.pandora-editor-slides {
     display: flex;
     overflow-x: auto;
     scroll-behavior: smooth;
@@ -27,7 +27,7 @@
 
     @for $i from 1 through 6 {
         &.columns-#{$i} {
-            .wp-block-craft-slide {
+            .wp-block-pandora-slide {
                 width: calc(100% / #{$i});
                 min-width: calc(100% / #{$i});
             }

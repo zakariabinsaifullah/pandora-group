@@ -1,4 +1,4 @@
-.craft-overlay-bg {
+.pandora-overlay-bg {
 	position: relative;
 
 	// Overlay sits behind block content via z-index layering.
@@ -8,7 +8,7 @@
 		inset: 0;
 		z-index: 0;
 		pointer-events: none;
-		background: var(--craft-overlay-bg);
+		background: var(--pandora-overlay-bg);
 	}
 
 	// Lift all direct children above the ::after overlay.

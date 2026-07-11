@@ -1,4 +1,4 @@
-.wp-block-craft-social-share {
+.wp-block-pandora-social-share {
 	--icon-size: 24px;
 	--gap: 12px;
 	--icon-color: currentColor;
@@ -6,26 +6,26 @@
 	--icon-radius: 0px;
 	--icon-padding: 0px;
 
-	&.justify-center .craft-social-share__icons {
+	&.justify-center .pandora-social-share__icons {
 		justify-content: center;
 	}
 
-	&.justify-right .craft-social-share__icons {
+	&.justify-right .pandora-social-share__icons {
 		justify-content: flex-end;
 	}
 
-	&.justify-left .craft-social-share__icons {
+	&.justify-left .pandora-social-share__icons {
 		justify-content: flex-start;
 	}
 
-	.craft-social-share__icons {
+	.pandora-social-share__icons {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
 		gap: var(--gap);
 	}
 
-	.craft-social-share__item {
+	.pandora-social-share__item {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;

@@ -1,4 +1,4 @@
-.craft-global-hover {
+.pandora-global-hover {
 	// Container transitions.
 	transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -15,14 +15,14 @@
 	}
 
 	&:hover {
-		background-color: var(--craft-ghover-bg) !important;
+		background-color: var(--pandora-ghover-bg) !important;
 
 		// Force colour on the wrapper itself …
-		color: var(--craft-ghover-color) !important;
+		color: var(--pandora-ghover-color) !important;
 
 		// … and every descendant element (links, headings, spans, etc.).
 		* {
-			color: var(--craft-ghover-color) !important;
+			color: var(--pandora-ghover-color) !important;
 		}
 
 		// SVG shape fills and strokes.
@@ -33,8 +33,8 @@
 		svg line,
 		svg polyline,
 		svg ellipse {
-			fill: var(--craft-ghover-color) !important;
-			stroke: var(--craft-ghover-color) !important;
+			fill: var(--pandora-ghover-color) !important;
+			stroke: var(--pandora-ghover-color) !important;
 		}
 	}
 }
