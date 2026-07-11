@@ -14,4 +14,17 @@
         background-repeat: no-repeat;
         z-index: 9;
     }
+
+
 }
+
+    // mobile view 
+    @media (max-width: 767px){
+        .pandora-quote {
+            &::before {
+                left: 15px;
+                width: 100px;
+                height: 70px;
+            }
+        }
+    }
