@@ -4,7 +4,7 @@
  *
  * Renders a filterable, paginated post grid via AJAX.
  *
- * Usage: [pandora_posts_grid per_page="6" post_type="post"]
+ * Usage: [pandora_posts_grid per_page="9" post_type="post" categories="4,9"]
  */
 
 // =============================================================================
@@ -39,26 +39,25 @@ endif;
 
 if ( ! function_exists( 'pandora_posts_grid_render_post_item' ) ) :
 	/**
-	 * Renders a single post card: image, title, excerpt, author avatar + name + date.
+	 * Renders a single post card: image → category → title → excerpt → date.
 	 */
-	function pandora_posts_grid_render_post_item( $post_id ) {
+	function pandora_posts_grid_render_post_item( $post_id, $taxonomy = 'category' ) {
 		$post = get_post( $post_id );
 		if ( ! $post ) {
 			return '';
 		}
 
-		$permalink   = get_permalink( $post_id );
-		$title       = get_the_title( $post_id );
-		$excerpt     = get_the_excerpt( $post_id );
-		$date        = get_the_date( 'F j, Y', $post_id );
-		$author_id   = (int) $post->post_author;
-		$author_name = get_the_author_meta( 'display_name', $author_id );
-		$avatar      = get_avatar( $author_id, 32, '', esc_attr( $author_name ), array( 'class' => 'ipg-card__avatar-img' ) );
-		$thumbnail   = has_post_thumbnail( $post_id )
+		$permalink = get_permalink( $post_id );
+		$title     = get_the_title( $post_id );
+		$excerpt   = get_the_excerpt( $post_id );
+		$date      = get_the_date( 'F j, Y', $post_id );
+		$terms     = get_the_terms( $post_id, $taxonomy );
+		$cat_name  = ( $terms && ! is_wp_error( $terms ) ) ? $terms[0]->name : '';
+		$thumbnail = has_post_thumbnail( $post_id )
 			? get_the_post_thumbnail( $post_id, 'medium_large', array( 'loading' => 'lazy' ) )
 			: '';
 
-		$html  = '<div class="ipg-card">';
+		$html = '<div class="ipg-card">';
 
 		if ( $thumbnail ) {
 			$html .= '<a href="' . esc_url( $permalink ) . '" class="ipg-card__image" tabindex="-1" aria-hidden="true">';
@@ -67,19 +66,18 @@ if ( ! function_exists( 'pandora_posts_grid_render_post_item' ) ) :
 		}
 
 		$html .= '<div class="ipg-card__body">';
+
+		if ( $cat_name ) {
+			$html .= '<span class="ipg-card__category">' . esc_html( $cat_name ) . '</span>';
+		}
+
 		$html .= '<h2 class="ipg-card__title"><a href="' . esc_url( $permalink ) . '">' . esc_html( $title ) . '</a></h2>';
 
 		if ( $excerpt ) {
 			$html .= '<p class="ipg-card__excerpt">' . esc_html( $excerpt ) . '</p>';
 		}
 
-		// $html .= '<div class="ipg-card__meta">';
-		// $html .= '<span class="ipg-card__avatar">' . $avatar . '</span>';
-		// $html .= '<span class="ipg-card__author">' . esc_html( $author_name ) . '</span>';
-		// $html .= '<span class="ipg-card__sep" aria-hidden="true">&middot;</span>';
-		// $html .= '<span class="ipg-card__date">' . esc_html( $date ) . '</span>';
-		// $html .= '</div>';
-
+		$html .= '<span class="ipg-card__date">' . esc_html( $date ) . '</span>';
 		$html .= '</div>';
 		$html .= '</div>';
 
@@ -92,7 +90,7 @@ if ( ! function_exists( 'pandora_posts_grid_render_posts' ) ) :
 	/**
 	 * Renders the full grid of post cards for a given WP_Query.
 	 */
-	function pandora_posts_grid_render_posts( $query ) {
+	function pandora_posts_grid_render_posts( $query, $taxonomy = 'category' ) {
 		if ( ! $query->have_posts() ) {
 			return '<p class="ipg-no-posts">' . esc_html__( 'No posts found.', 'pandora-group' ) . '</p>';
 		}
@@ -101,7 +99,7 @@ if ( ! function_exists( 'pandora_posts_grid_render_posts' ) ) :
 
 		while ( $query->have_posts() ) {
 			$query->the_post();
-			$html .= pandora_posts_grid_render_post_item( get_the_ID() );
+			$html .= pandora_posts_grid_render_post_item( get_the_ID(), $taxonomy );
 		}
 
 		$html .= '</div>';
@@ -231,7 +229,7 @@ if ( ! function_exists( 'pandora_posts_grid_ajax' ) ) :
 
 		$cat        = isset( $_POST['cat'] )        ? absint( $_POST['cat'] )                                        : 0;
 		$page       = isset( $_POST['page'] )       ? max( 1, absint( $_POST['page'] ) )                             : 1;
-		$per_page   = isset( $_POST['per_page'] )   ? min( 50, max( 1, absint( $_POST['per_page'] ) ) )              : 6;
+		$per_page   = isset( $_POST['per_page'] )   ? min( 50, max( 1, absint( $_POST['per_page'] ) ) )              : 9;
 		$post_type  = isset( $_POST['post_type'] )  ? sanitize_text_field( wp_unslash( $_POST['post_type'] ) )       : 'post';
 		$taxonomy   = isset( $_POST['taxonomy'] )   ? sanitize_key( $_POST['taxonomy'] )                             : 'category';
 		$categories = isset( $_POST['categories'] ) ? sanitize_text_field( wp_unslash( $_POST['categories'] ) )      : '';
@@ -274,7 +272,7 @@ if ( ! function_exists( 'pandora_posts_grid_ajax' ) ) :
 		$query = new WP_Query( $args );
 
 		wp_send_json_success( array(
-			'html'         => pandora_posts_grid_render_posts( $query ),
+			'html'         => pandora_posts_grid_render_posts( $query, $taxonomy ),
 			'pagination'   => pandora_posts_grid_render_pagination( (int) $query->max_num_pages, $page ),
 			'total_pages'  => (int) $query->max_num_pages,
 			'current_page' => $page,
@@ -289,20 +287,78 @@ add_action( 'wp_ajax_nopriv_pandora_posts_grid', 'pandora_posts_grid_ajax' );
 // Shortcode
 // =============================================================================
 
+if ( ! function_exists( 'pandora_posts_grid_resolve_taxonomy' ) ) :
+	/**
+	 * Returns the primary hierarchical taxonomy for a post type.
+	 */
+	function pandora_posts_grid_resolve_taxonomy( $post_type ) {
+		foreach ( get_object_taxonomies( $post_type, 'objects' ) as $tax ) {
+			if ( $tax->public && $tax->hierarchical ) {
+				return $tax->name;
+			}
+		}
+		return 'category';
+	}
+endif;
+
+
+if ( ! function_exists( 'pandora_posts_grid_resolve_allowed_cats' ) ) :
+	/**
+	 * Resolves allowed category IDs, falling back to all non-empty terms.
+	 */
+	function pandora_posts_grid_resolve_allowed_cats( $categories_raw, $taxonomy ) {
+		$ids = pandora_posts_grid_resolve_category_ids( $categories_raw, $taxonomy );
+
+		if ( empty( $ids ) ) {
+			$all = get_terms( array( 'taxonomy' => $taxonomy, 'hide_empty' => true, 'fields' => 'ids' ) );
+			$ids = is_wp_error( $all ) ? array() : array_map( 'intval', $all );
+		}
+
+		return $ids;
+	}
+endif;
+
+
+if ( ! function_exists( 'pandora_posts_grid_render_tabs' ) ) :
+	/**
+	 * Renders the filter tab buttons for a given set of terms.
+	 *
+	 * @param array  $terms    Array of WP_Term objects.
+	 * @param string $wrapper  CSS class wrapping the nav ('ipg-nav').
+	 */
+	function pandora_posts_grid_render_tabs( $terms ) {
+		if ( empty( $terms ) ) {
+			return '';
+		}
+
+		$html  = '<div class="ipg-nav">';
+		$html .= '<button class="ipg-filter-btn active" data-cat="0">' . esc_html__( 'All', 'pandora-group' ) . '</button>';
+		foreach ( $terms as $term ) {
+			$html .= '<button class="ipg-filter-btn" data-cat="' . esc_attr( $term->term_id ) . '">' . esc_html( $term->name ) . '</button>';
+		}
+		$html .= '</div>';
+
+		return $html;
+	}
+endif;
+
+
 if ( ! function_exists( 'pandora_posts_grid_shortcode' ) ) :
 	/**
-	 * [pandora_posts_grid per_page="6" post_type="post" categories="4,9"]
+	 * [pandora_posts_grid per_page="9" post_type="post" categories="4,9" id=""]
 	 *
-	 * `categories` accepts a comma-separated list of term IDs and/or slugs.
-	 * When set, only posts in those categories are shown/filterable; when
-	 * empty (default), all categories are loaded as before.
+	 * `per_page`   — posts per page (default 9).
+	 * `categories` — comma-separated term IDs or slugs; omit for all categories.
+	 * `id`         — when set, tabs are omitted and the grid listens for a remote
+	 *                pandora:filter event fired by [pandora_posts_tabs for="<id>"].
 	 */
 	function pandora_posts_grid_shortcode( $atts ) {
 		$atts = shortcode_atts(
 			array(
-				'per_page'   => 6,
+				'per_page'   => 9,
 				'post_type'  => 'post',
 				'categories' => '',
+				'id'         => '',
 			),
 			$atts,
 			'pandora_posts_grid'
@@ -310,52 +366,33 @@ if ( ! function_exists( 'pandora_posts_grid_shortcode' ) ) :
 
 		$per_page  = min( 50, max( 1, (int) $atts['per_page'] ) );
 		$post_type = sanitize_key( $atts['post_type'] );
+		$grid_id   = sanitize_html_class( $atts['id'] );
 
 		if ( ! post_type_exists( $post_type ) ) {
 			$post_type = 'post';
 		}
 
-		// Resolve primary hierarchical taxonomy for filter buttons.
-		$taxonomy = 'category';
-		foreach ( get_object_taxonomies( $post_type, 'objects' ) as $tax ) {
-			if ( $tax->public && $tax->hierarchical ) {
-				$taxonomy = $tax->name;
-				break;
-			}
+		$taxonomy        = pandora_posts_grid_resolve_taxonomy( $post_type );
+		$allowed_cat_ids = pandora_posts_grid_resolve_allowed_cats( $atts['categories'], $taxonomy );
+
+		if ( empty( $allowed_cat_ids ) ) {
+			return '<p class="ipg-no-posts">' . esc_html__( 'No categories found.', 'pandora-group' ) . '</p>';
 		}
 
-		$allowed_cat_ids = pandora_posts_grid_resolve_category_ids( $atts['categories'], $taxonomy );
-
-		$terms_args = array( 'taxonomy' => $taxonomy, 'hide_empty' => true );
-		if ( ! empty( $allowed_cat_ids ) ) {
-			$terms_args['include'] = $allowed_cat_ids;
-			$terms_args['orderby'] = 'include';
-		}
-
-		$terms = get_terms( $terms_args );
-		if ( is_wp_error( $terms ) ) {
-			$terms = array();
-		}
-
-		// Initial query (page 1, no filter).
-		$query_args = array(
+		// Initial query (page 1, no category filter).
+		$query = new WP_Query( array(
 			'post_type'      => $post_type,
 			'posts_per_page' => $per_page,
 			'paged'          => 1,
 			'post_status'    => 'publish',
-		);
-
-		if ( ! empty( $allowed_cat_ids ) ) {
-			$query_args['tax_query'] = array(
+			'tax_query'      => array(
 				array(
 					'taxonomy' => $taxonomy,
 					'field'    => 'term_id',
 					'terms'    => $allowed_cat_ids,
 				),
-			);
-		}
-
-		$query = new WP_Query( $query_args );
+			),
+		) );
 
 		pandora_posts_grid_enqueue_assets();
 
@@ -368,21 +405,22 @@ if ( ! function_exists( 'pandora_posts_grid_shortcode' ) ) :
 			'categories' => implode( ',', $allowed_cat_ids ),
 		) );
 
-		$html = '<div class="ipg-wrapper" data-config="' . esc_attr( $config ) . '">';
+		$grid_id_attr = $grid_id ? ' data-grid-id="' . esc_attr( $grid_id ) . '"' : '';
+		$html = '<div class="ipg-wrapper" data-config="' . esc_attr( $config ) . '"' . $grid_id_attr . '>';
 
-		// Filter nav.
-		if ( ! empty( $terms ) ) {
-			$html .= '<div class="ipg-nav">';
-			$html .= '<button class="ipg-filter-btn active" data-cat="0">' . esc_html__( 'View All', 'pandora-group' ) . '</button>';
-			foreach ( $terms as $term ) {
-				$html .= '<button class="ipg-filter-btn" data-cat="' . esc_attr( $term->term_id ) . '">' . esc_html( $term->name ) . '</button>';
-			}
-			$html .= '</div>';
+		// Embed tabs only in self-contained mode (no id attribute).
+		if ( ! $grid_id ) {
+			$terms = get_terms( array(
+				'taxonomy'   => $taxonomy,
+				'include'    => $allowed_cat_ids,
+				'orderby'    => 'include',
+				'hide_empty' => true,
+			) );
+			$html .= pandora_posts_grid_render_tabs( is_wp_error( $terms ) ? array() : $terms );
 		}
 
-		$html .= '<div class="ipg-posts">' . pandora_posts_grid_render_posts( $query ) . '</div>';
+		$html .= '<div class="ipg-posts">' . pandora_posts_grid_render_posts( $query, $taxonomy ) . '</div>';
 		$html .= '<div class="ipg-pagination-wrap">' . pandora_posts_grid_render_pagination( (int) $query->max_num_pages, 1 ) . '</div>';
-
 		$html .= '</div>';
 
 		wp_reset_postdata();
@@ -391,3 +429,64 @@ if ( ! function_exists( 'pandora_posts_grid_shortcode' ) ) :
 	}
 endif;
 add_shortcode( 'pandora_posts_grid', 'pandora_posts_grid_shortcode' );
+
+
+if ( ! function_exists( 'pandora_posts_tabs_shortcode' ) ) :
+	/**
+	 * [pandora_posts_tabs for="blog" post_type="post" categories="4,9"]
+	 *
+	 * Renders standalone filter tabs that control a remote [pandora_posts_grid id="blog"].
+	 * `for`        — must match the `id` of the target [pandora_posts_grid].
+	 * `categories` — must match the `categories` passed to the target grid.
+	 * `post_type`  — must match the `post_type` of the target grid.
+	 */
+	function pandora_posts_tabs_shortcode( $atts ) {
+		$atts = shortcode_atts(
+			array(
+				'for'        => '',
+				'post_type'  => 'post',
+				'categories' => '',
+			),
+			$atts,
+			'pandora_posts_tabs'
+		);
+
+		$grid_id   = sanitize_html_class( $atts['for'] );
+		$post_type = sanitize_key( $atts['post_type'] );
+
+		if ( ! $grid_id ) {
+			return '';
+		}
+
+		if ( ! post_type_exists( $post_type ) ) {
+			$post_type = 'post';
+		}
+
+		$taxonomy        = pandora_posts_grid_resolve_taxonomy( $post_type );
+		$allowed_cat_ids = pandora_posts_grid_resolve_allowed_cats( $atts['categories'], $taxonomy );
+
+		if ( empty( $allowed_cat_ids ) ) {
+			return '';
+		}
+
+		$terms = get_terms( array(
+			'taxonomy'   => $taxonomy,
+			'include'    => $allowed_cat_ids,
+			'orderby'    => 'include',
+			'hide_empty' => true,
+		) );
+
+		if ( is_wp_error( $terms ) || empty( $terms ) ) {
+			return '';
+		}
+
+		pandora_posts_grid_enqueue_assets();
+
+		$html  = '<div class="ipg-tabs-remote" data-for="' . esc_attr( $grid_id ) . '">';
+		$html .= pandora_posts_grid_render_tabs( $terms );
+		$html .= '</div>';
+
+		return $html;
+	}
+endif;
+add_shortcode( 'pandora_posts_tabs', 'pandora_posts_tabs_shortcode' );

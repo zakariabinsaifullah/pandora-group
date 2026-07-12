@@ -32,6 +32,33 @@ endif;
 add_filter( 'block_categories_all', 'pandora_block_categories', 10, 2 );
 
 
+// ── Post category list: ID column ──────────────────────────────────────────────
+
+add_filter( 'manage_edit-category_columns', 'pandora_category_id_column' );
+function pandora_category_id_column( $columns ) {
+	$columns['pandora_cat_id'] = __( 'ID', 'pandora-group' );
+	return $columns;
+}
+
+add_filter( 'manage_category_custom_column', 'pandora_category_id_column_content', 10, 3 );
+function pandora_category_id_column_content( $content, $column_name, $term_id ) {
+	if ( 'pandora_cat_id' === $column_name ) {
+		$content = $term_id;
+	}
+	return $content;
+}
+
+add_action( 'admin_head', 'pandora_category_id_column_width' );
+function pandora_category_id_column_width() {
+	$screen = get_current_screen();
+	if ( ! $screen || 'edit-category' !== $screen->id ) {
+		return;
+	}
+	echo '<style>th.column-pandora_cat_id,td.column-pandora_cat_id{width:80px!important;text-align:center!important;} th.column-pandora_cat_id a{display:block;text-align:center;}</style>';
+}
+
+// ── Block & pattern categories ─────────────────────────────────────────────────
+
 if ( ! function_exists( 'pandora_pattern_categories' ) ) :
 	/**
 	 * Registers the "Pandora Group" block pattern category.

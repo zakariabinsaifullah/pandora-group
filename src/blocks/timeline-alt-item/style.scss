@@ -14,14 +14,18 @@ $timeline-alt-line-gradient: linear-gradient(180deg, #c30efd 0%, #2c57ff 100%);
         grid-row: 1;
         justify-self: center;
         width: max-content;
-        max-width: 200px;
+        max-width: 100px;
         white-space: pre-line;
         margin-bottom: 12px;
         font-size: 14px;
-        font-weight: 600;
+        font-weight: 400;
         line-height: 1.4;
         text-align: center;
-        color: $timeline-alt-accent;
+        background: linear-gradient(104.04deg, #E040FB 0%, #2C57FF 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent;
     }
 
     .timeline-alt-center {
@@ -61,7 +65,7 @@ $timeline-alt-line-gradient: linear-gradient(180deg, #c30efd 0%, #2c57ff 100%);
         justify-content: center;
         border-radius: 50%;
         background: linear-gradient(135deg, #fdfcff 0%, #dfd6ff 100%);
-        border: 1px solid #ffffff;
+        border: 2px solid #ffffff;
         color: $timeline-alt-accent;
 
         svg {
@@ -99,8 +103,6 @@ $timeline-alt-line-gradient: linear-gradient(180deg, #c30efd 0%, #2c57ff 100%);
             grid-row: 1;
             justify-self: start;
             width: auto;
-            max-width: none;
-            text-align: left;
         }
 
         // grid-row stays 2 here, inherited from the base rules above —

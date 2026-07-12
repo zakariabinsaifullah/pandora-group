@@ -515,7 +515,7 @@
                 {
                     "fluid": {
                         "max": "32px",
-                        "min": "26px"
+                        "min": "24px"
                     },
                     "name": "Heading Three",
                     "size": "32px",
@@ -523,11 +523,11 @@
                 },
                 {
                     "fluid": {
-                        "max": "26px",
+                        "max": "24px",
                         "min": "20px"
                     },
                     "name": "Heading Four",
-                    "size": "26px",
+                    "size": "24px",
                     "slug": "pandora-heading-four"
                 },
                 {
@@ -830,6 +830,11 @@
                     "fontSize": "var(--wp--preset--font-size--pandora-small)"
                 }
             },
+            "core/post-featured-image": {
+                "border": {
+                    "radius": "16px"
+                }
+            },
             "core/post-navigation-link": {
                 "typography": {
                     "fontSize": "var(--wp--preset--font-size--pandora-small)"
@@ -1076,7 +1081,7 @@
                     "fontFamily": "var(--wp--preset--font-family--satoshi)",
                     "fontSize": "var(--wp--preset--font-size--pandora-heading-two)",
                     "fontStyle": "normal",
-                    "fontWeight": "700",
+                    "fontWeight": "500",
                     "lineHeight": "1.2"
                 }
             },
@@ -1088,7 +1093,7 @@
                     "fontFamily": "var(--wp--preset--font-family--satoshi)",
                     "fontSize": "var(--wp--preset--font-size--pandora-heading-three)",
                     "fontStyle": "normal",
-                    "fontWeight": "700",
+                    "fontWeight": "500",
                     "lineHeight": "1.2"
                 }
             },
@@ -1100,7 +1105,7 @@
                     "fontFamily": "var(--wp--preset--font-family--satoshi)",
                     "fontSize": "var(--wp--preset--font-size--pandora-heading-four)",
                     "fontStyle": "normal",
-                    "fontWeight": "700",
+                    "fontWeight": "500",
                     "lineHeight": "1.2"
                 }
             },
@@ -1112,7 +1117,7 @@
                     "fontFamily": "var(--wp--preset--font-family--satoshi)",
                     "fontSize": "var(--wp--preset--font-size--pandora-heading-five)",
                     "fontStyle": "normal",
-                    "fontWeight": "700",
+                    "fontWeight": "500",
                     "letterSpacing": "0px",
                     "lineHeight": "1.2"
                 }
@@ -1125,7 +1130,7 @@
                     "fontFamily": "var(--wp--preset--font-family--satoshi)",
                     "fontSize": "var(--wp--preset--font-size--pandora-heading-six)",
                     "fontStyle": "normal",
-                    "fontWeight": "700",
+                    "fontWeight": "500",
                     "letterSpacing": "0px",
                     "lineHeight": "1.2",
                     "textTransform": "none"

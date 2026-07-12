@@ -2,13 +2,14 @@
 	'use strict';
 
 	document.addEventListener( 'DOMContentLoaded', function () {
-		document.querySelectorAll( '.ipg-wrapper' ).forEach( function ( wrapper ) {
-			var config         = JSON.parse( wrapper.dataset.config || '{}' );
-			var postsEl        = wrapper.querySelector( '.ipg-posts' );
-			var paginationEl   = wrapper.querySelector( '.ipg-pagination-wrap' );
-			var activeCat      = 0;
-			var activePage     = 1;
-			var loading        = false;
+
+		// ── Shared: initialise AJAX fetch for a grid wrapper ─────────────────
+		function initGrid( wrapper ) {
+			var config       = JSON.parse( wrapper.dataset.config || '{}' );
+			var postsEl      = wrapper.querySelector( '.ipg-posts' );
+			var paginationEl = wrapper.querySelector( '.ipg-pagination-wrap' );
+			var state        = { cat: 0, page: 1 };
+			var loading      = false;
 
 			function fetchPosts() {
 				if ( loading ) return;
@@ -18,11 +19,11 @@
 				var body = new URLSearchParams( {
 					action:     'pandora_posts_grid',
 					nonce:      config.nonce,
-					cat:        activeCat,
-					page:       activePage,
-					per_page:   config.perPage   || 6,
+					cat:        state.cat,
+					page:       state.page,
+					per_page:   config.perPage   || 9,
 					post_type:  config.postType  || 'post',
-					taxonomy:   config.taxonomy   || 'category',
+					taxonomy:   config.taxonomy  || 'category',
 					categories: config.categories || '',
 				} );
 
@@ -44,28 +45,72 @@
 			function bindPagination() {
 				paginationEl.querySelectorAll( '.ipg-page-btn' ).forEach( function ( btn ) {
 					btn.addEventListener( 'click', function () {
-						activePage = parseInt( this.dataset.page, 10 );
+						state.page = parseInt( this.dataset.page, 10 );
 						fetchPosts();
 						wrapper.scrollIntoView( { behavior: 'smooth', block: 'start' } );
 					} );
 				} );
 			}
 
-			// Filter buttons
+			bindPagination();
+
+			return { state: state, fetch: fetchPosts };
+		}
+
+
+		// ── Self-contained grids (tabs embedded, no data-grid-id) ────────────
+		document.querySelectorAll( '.ipg-wrapper:not([data-grid-id])' ).forEach( function ( wrapper ) {
+			var grid = initGrid( wrapper );
+
 			wrapper.querySelectorAll( '.ipg-filter-btn' ).forEach( function ( btn ) {
 				btn.addEventListener( 'click', function () {
 					wrapper.querySelectorAll( '.ipg-filter-btn' ).forEach( function ( b ) {
 						b.classList.remove( 'active' );
 					} );
 					this.classList.add( 'active' );
-					activeCat  = parseInt( this.dataset.cat || '0', 10 );
-					activePage = 1;
-					fetchPosts();
+					grid.state.cat  = parseInt( this.dataset.cat || '0', 10 );
+					grid.state.page = 1;
+					grid.fetch();
 				} );
 			} );
-
-			// Bind pagination on initial load
-			bindPagination();
 		} );
+
+
+		// ── Remote grids (listen for pandora:filter CustomEvent) ─────────────
+		document.querySelectorAll( '.ipg-wrapper[data-grid-id]' ).forEach( function ( wrapper ) {
+			var gridId = wrapper.dataset.gridId;
+			var grid   = initGrid( wrapper );
+
+			document.addEventListener( 'pandora:filter', function ( e ) {
+				if ( e.detail.id !== gridId ) return;
+				grid.state.cat  = e.detail.cat;
+				grid.state.page = 1;
+				grid.fetch();
+				wrapper.scrollIntoView( { behavior: 'smooth', block: 'start' } );
+			} );
+		} );
+
+
+		// ── Remote tabs (fire pandora:filter CustomEvent) ─────────────────────
+		document.querySelectorAll( '.ipg-tabs-remote' ).forEach( function ( tabsEl ) {
+			var forId = tabsEl.dataset.for;
+
+			tabsEl.querySelectorAll( '.ipg-filter-btn' ).forEach( function ( btn ) {
+				btn.addEventListener( 'click', function () {
+					tabsEl.querySelectorAll( '.ipg-filter-btn' ).forEach( function ( b ) {
+						b.classList.remove( 'active' );
+					} );
+					this.classList.add( 'active' );
+
+					document.dispatchEvent( new CustomEvent( 'pandora:filter', {
+						detail: {
+							id:  forId,
+							cat: parseInt( this.dataset.cat || '0', 10 ),
+						},
+					} ) );
+				} );
+			} );
+		} );
+
 	} );
 }() );

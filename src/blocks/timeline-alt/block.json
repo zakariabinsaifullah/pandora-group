@@ -3,7 +3,7 @@
     "apiVersion": 3,
     "name": "pandora/timeline-alt",
     "version": "1.0.0",
-    "title": "Timeline Alternating",
+    "title": "Sides Timeline",
     "category": "pandora",
     "icon": "star-filled",
     "description": "Vertical timeline with a centered line and alternating left/right content.",
