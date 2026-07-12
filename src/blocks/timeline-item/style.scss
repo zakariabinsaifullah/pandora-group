@@ -1,4 +1,6 @@
 .wp-block-pandora-timeline-item {
+    flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: row;
     align-items: stretch;

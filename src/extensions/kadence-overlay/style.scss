@@ -1,0 +1,16 @@
+.has-kadence-overlay {
+    position: relative;
+
+    // Decorative overlay image via ::after — keeps Kadence's own ::before overlay intact.
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+        background-image: var(--pandora-koverlay-image);
+        background-size: auto;
+        background-repeat: no-repeat;
+        background-position: var(--pandora-koverlay-left, 0px) var(--pandora-koverlay-top, 0px);
+    }
+}

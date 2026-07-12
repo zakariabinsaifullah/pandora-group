@@ -1,4 +1,4 @@
-.craft-modal__icons {
+.pandora-modal__icons {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 24px;
@@ -46,7 +46,7 @@
         grid-template-columns: repeat(2, 1fr);
     }
 }
-.craft-modal__custom-svg {
+.pandora-modal__custom-svg {
     display: flex;
     padding: 24px 0;
     gap: 24px;
@@ -75,7 +75,7 @@
         width: 360px;
         display: flex;
         flex-direction: column;
-        .craft-icon-preview-container {
+        .pandora-icon-preview-container {
             flex: 1;
         }
 

@@ -1,4 +1,4 @@
-.craft-query-carousel {
+.pandora-query-carousel {
     border: none !important;
     position: relative;
 
@@ -24,14 +24,14 @@
     }
 
     // ── Controls wrapper (pagination + nav arrows) ────────────────────────────
-    .craft-qc-controls {
+    .pandora-qc-controls {
         display: flex;
         align-items: center;
         justify-content: space-between;
         margin-top: 50px;
     }
 
-    .craft-qc-nav-group {
+    .pandora-qc-nav-group {
         display: flex;
         gap: 8px;
     }

@@ -45,6 +45,22 @@ if ( ! function_exists( 'pandora_block_styles' ) ) :
 		);
 
 		register_block_style(
+			'core/heading',
+			array(
+				'name'  => 'gradient-text',
+				'label' => __( 'Gradient Text', 'pandora-group' ),
+			)
+		);
+
+		register_block_style(
+			'core/paragraph',
+			array(
+				'name'  => 'gradient-text',
+				'label' => __( 'Gradient Text', 'pandora-group' ),
+			)
+		);
+
+		register_block_style(
 			'core/button',
 			array(
 				'name'  => 'link',

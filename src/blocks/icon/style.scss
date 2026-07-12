@@ -1,4 +1,4 @@
-.wp-block-craft-icon {
+.wp-block-pandora-icon {
     display: flex;
 
     &.justify-center {
@@ -13,12 +13,13 @@
 
     .icon-container {
         line-height: 0;
+        display: inline-flex;
     }
 
     svg {
         width: 1em;
         height: 1em;
-        font-size: var(--msize, 36px);
+        font-size: var(--msize, 24px);
     }
 
     &.is-fill svg {
@@ -30,7 +31,7 @@
     }
 
     /* Icon + text wrapper */
-    .craft-icon-block-wrapper {
+    .pandora-icon-block-wrapper {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -48,14 +49,14 @@
     // desktop view
     @media (min-width: 1025px) {
         svg {
-            font-size: var(--dsize, 36px);
+            font-size: var(--dsize, 24px);
         }
     }
 
     // tablet view
     @media (min-width: 768px) and (max-width: 1024px) {
         svg {
-            font-size: var(--tsize, 36px);
+            font-size: var(--tsize, 24px);
         }
     }
 }

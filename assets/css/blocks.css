@@ -94,12 +94,28 @@ header.wp-block-kadence-rowlayout::before {
     flex-shrink: 0;
 }
 
+.is-style-gradient-text {
+    background: #fff;
+    border-radius: 100px;
+}
+
 .wp-block-button.is-style-gradient-text .wp-block-button__link {
     background: var(--wp--preset--gradient--pandora-magenta-indigo) !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
     background-clip: text !important;
     color: transparent !important;
+}
+
+.wp-block-heading.is-style-gradient-text,
+.wp-block-paragraph.is-style-gradient-text {
+    background: linear-gradient(104.04deg, #E040FB 0%, #2C57FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    border-radius: 0;
+    width: fit-content;
 }
 
 @media screen and (max-width: 767px) {

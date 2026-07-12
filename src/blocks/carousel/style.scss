@@ -1,4 +1,4 @@
-.wp-block-craft-carousel {
+.wp-block-pandora-carousel {
     border: none !important;
     position: relative;
 
@@ -19,20 +19,20 @@
 
     // Swiper slide height control
     &.fixed {
-        .wp-block-craft-slide {
+        .wp-block-pandora-slide {
             height: var(--mheight);
         }
 
         // tablet view
         @media (max-width: 1024px) and (min-width: 768px) {
-            .wp-block-craft-slide {
+            .wp-block-pandora-slide {
                 height: var(--theight);
             }
         }
 
         // desktop
         @media (min-width: 1025px) {
-            .wp-block-craft-slide {
+            .wp-block-pandora-slide {
                 height: var(--dheight);
             }
         }

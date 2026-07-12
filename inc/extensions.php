@@ -27,7 +27,7 @@ if ( ! function_exists( 'pandora_enqueue_hover_color_editor_assets' ) ) :
 			'pandora-hover-color-extension',
 			get_theme_file_uri( 'build/extensions/hover-color/index.js' ),
 			$assets['dependencies'],
-			$assets['version'],
+			wp_get_theme()->get( 'Version' ),
 			true
 		);
 
@@ -37,7 +37,7 @@ if ( ! function_exists( 'pandora_enqueue_hover_color_editor_assets' ) ) :
 				'pandora-hover-color-extension',
 				get_theme_file_uri( 'build/extensions/hover-color/index.css' ),
 				array(),
-				$assets['version']
+				wp_get_theme()->get( 'Version' )
 			);
 		}
 	}
@@ -64,7 +64,7 @@ if ( ! function_exists( 'pandora_enqueue_hover_color_frontend_assets' ) ) :
 			'pandora-hover-color-extension-style',
 			get_theme_file_uri( 'build/extensions/hover-color/style-index.css' ),
 			array(),
-			$assets['version']
+			wp_get_theme()->get( 'Version' )
 		);
 	}
 endif;
@@ -190,7 +190,7 @@ if ( ! function_exists( 'pandora_enqueue_group_full_height_editor_assets' ) ) :
 			'pandora-group-full-height-extension',
 			get_theme_file_uri( 'build/extensions/group-full-height/index.js' ),
 			$assets['dependencies'],
-			$assets['version'],
+			wp_get_theme()->get( 'Version' ),
 			true
 		);
 
@@ -200,7 +200,7 @@ if ( ! function_exists( 'pandora_enqueue_group_full_height_editor_assets' ) ) :
 				'pandora-group-full-height-extension',
 				get_theme_file_uri( 'build/extensions/group-full-height/index.css' ),
 				array(),
-				$assets['version']
+				wp_get_theme()->get( 'Version' )
 			);
 		}
 	}
@@ -227,7 +227,7 @@ if ( ! function_exists( 'pandora_enqueue_group_full_height_frontend_assets' ) ) 
 			'pandora-group-full-height-extension-style',
 			get_theme_file_uri( 'build/extensions/group-full-height/style-index.css' ),
 			array(),
-			$assets['version']
+			wp_get_theme()->get( 'Version' )
 		);
 	}
 endif;
@@ -269,73 +269,6 @@ add_filter( 'render_block', 'pandora_render_group_full_height', 10, 2 );
 
 
 // =============================================================================
-// Group / Row Layout – Glass Effect Extension
-// =============================================================================
-
-if ( ! function_exists( 'pandora_enqueue_glass_effect_editor_assets' ) ) :
-	/**
-	 * Enqueues the glass-effect extension script.
-	 * Runs on `enqueue_block_editor_assets` (editor only). The frontend/editor CSS
-	 * for `.has-glass-effect` already lives in the globally enqueued blocks.css.
-	 */
-	function pandora_enqueue_glass_effect_editor_assets() {
-		$asset_file = get_theme_file_path( 'build/extensions/glass-effect/index.asset.php' );
-
-		if ( ! file_exists( $asset_file ) ) {
-			return;
-		}
-
-		$assets = require $asset_file;
-
-		wp_enqueue_script(
-			'pandora-glass-effect-extension',
-			get_theme_file_uri( 'build/extensions/glass-effect/index.js' ),
-			$assets['dependencies'],
-			$assets['version'],
-			true
-		);
-	}
-endif;
-add_action( 'enqueue_block_editor_assets', 'pandora_enqueue_glass_effect_editor_assets' );
-
-
-if ( ! function_exists( 'pandora_render_glass_effect' ) ) :
-	/**
-	 * Injects the `has-glass-effect` class into core/group and kadence/rowlayout
-	 * blocks on the frontend when the `glassEffectEnabled` attribute is enabled.
-	 *
-	 * @param string $block_content The rendered block HTML.
-	 * @param array  $block         The block data including name and attributes.
-	 * @return string Modified block HTML.
-	 */
-	function pandora_render_glass_effect( $block_content, $block ) {
-		$allowed_blocks = array( 'core/group', 'kadence/rowlayout', 'kadence/column' );
-
-		if ( ! in_array( $block['blockName'] ?? '', $allowed_blocks, true ) ) {
-			return $block_content;
-		}
-
-		if ( empty( $block['attrs']['glassEffectEnabled'] ) ) {
-			return $block_content;
-		}
-
-		if ( empty( $block_content ) ) {
-			return $block_content;
-		}
-
-		$processor = new WP_HTML_Tag_Processor( $block_content );
-		if ( $processor->next_tag() ) {
-			$processor->add_class( 'has-glass-effect' );
-			return $processor->get_updated_html();
-		}
-
-		return $block_content;
-	}
-endif;
-add_filter( 'render_block', 'pandora_render_glass_effect', 10, 2 );
-
-
-// =============================================================================
 // Group – Overlay Background Extension
 // =============================================================================
 
@@ -357,7 +290,7 @@ if ( ! function_exists( 'pandora_enqueue_group_overlay_bg_editor_assets' ) ) :
 			'pandora-group-overlay-bg-extension',
 			get_theme_file_uri( 'build/extensions/group-overlay-bg/index.js' ),
 			$assets['dependencies'],
-			$assets['version'],
+			wp_get_theme()->get( 'Version' ),
 			true
 		);
 
@@ -367,7 +300,7 @@ if ( ! function_exists( 'pandora_enqueue_group_overlay_bg_editor_assets' ) ) :
 				'pandora-group-overlay-bg-extension',
 				get_theme_file_uri( 'build/extensions/group-overlay-bg/index.css' ),
 				array(),
-				$assets['version']
+				wp_get_theme()->get( 'Version' )
 			);
 		}
 	}
@@ -394,7 +327,7 @@ if ( ! function_exists( 'pandora_enqueue_group_overlay_bg_frontend_assets' ) ) :
 			'pandora-group-overlay-bg-extension-style',
 			get_theme_file_uri( 'build/extensions/group-overlay-bg/style-index.css' ),
 			array(),
-			$assets['version']
+			wp_get_theme()->get( 'Version' )
 		);
 	}
 endif;
@@ -480,7 +413,7 @@ if ( ! function_exists( 'pandora_enqueue_group_global_hover_editor_assets' ) ) :
 			'pandora-group-global-hover-extension',
 			get_theme_file_uri( 'build/extensions/group-global-hover/index.js' ),
 			$assets['dependencies'],
-			$assets['version'],
+			wp_get_theme()->get( 'Version' ),
 			true
 		);
 
@@ -490,7 +423,7 @@ if ( ! function_exists( 'pandora_enqueue_group_global_hover_editor_assets' ) ) :
 				'pandora-group-global-hover-extension',
 				get_theme_file_uri( 'build/extensions/group-global-hover/index.css' ),
 				array(),
-				$assets['version']
+				wp_get_theme()->get( 'Version' )
 			);
 		}
 	}
@@ -517,7 +450,7 @@ if ( ! function_exists( 'pandora_enqueue_group_global_hover_frontend_assets' ) )
 			'pandora-group-global-hover-extension-style',
 			get_theme_file_uri( 'build/extensions/group-global-hover/style-index.css' ),
 			array(),
-			$assets['version']
+			wp_get_theme()->get( 'Version' )
 		);
 	}
 endif;
@@ -613,7 +546,7 @@ if ( ! function_exists( 'pandora_enqueue_text_max_width_editor_assets' ) ) :
 			'pandora-text-max-width-extension',
 			get_theme_file_uri( 'build/extensions/text-max-width/index.js' ),
 			$assets['dependencies'],
-			$assets['version'],
+			wp_get_theme()->get( 'Version' ),
 			true
 		);
 
@@ -623,7 +556,7 @@ if ( ! function_exists( 'pandora_enqueue_text_max_width_editor_assets' ) ) :
 				'pandora-text-max-width-extension',
 				get_theme_file_uri( 'build/extensions/text-max-width/index.css' ),
 				array(),
-				$assets['version']
+				wp_get_theme()->get( 'Version' )
 			);
 		}
 	}
@@ -650,7 +583,7 @@ if ( ! function_exists( 'pandora_enqueue_text_max_width_frontend_assets' ) ) :
 			'pandora-text-max-width-extension-style',
 			get_theme_file_uri( 'build/extensions/text-max-width/style-index.css' ),
 			array(),
-			$assets['version']
+			wp_get_theme()->get( 'Version' )
 		);
 	}
 endif;
@@ -726,7 +659,7 @@ if ( ! function_exists( 'pandora_enqueue_button_full_width_mobile_editor_assets'
 			'pandora-button-full-width-mobile-extension',
 			get_theme_file_uri( 'build/extensions/button-full-width-mobile/index.js' ),
 			$assets['dependencies'],
-			$assets['version'],
+			wp_get_theme()->get( 'Version' ),
 			true
 		);
 
@@ -736,7 +669,7 @@ if ( ! function_exists( 'pandora_enqueue_button_full_width_mobile_editor_assets'
 				'pandora-button-full-width-mobile-extension',
 				get_theme_file_uri( 'build/extensions/button-full-width-mobile/index.css' ),
 				array(),
-				$assets['version']
+				wp_get_theme()->get( 'Version' )
 			);
 		}
 	}
@@ -763,7 +696,7 @@ if ( ! function_exists( 'pandora_enqueue_button_full_width_mobile_frontend_asset
 			'pandora-button-full-width-mobile-extension-style',
 			get_theme_file_uri( 'build/extensions/button-full-width-mobile/style-index.css' ),
 			array(),
-			$assets['version']
+			wp_get_theme()->get( 'Version' )
 		);
 	}
 endif;
@@ -826,7 +759,7 @@ if ( ! function_exists( 'pandora_enqueue_button_gradient_border_editor_assets' )
 			'pandora-button-gradient-border-extension',
 			get_theme_file_uri( 'build/extensions/button-gradient-border/index.js' ),
 			$assets['dependencies'],
-			$assets['version'],
+			wp_get_theme()->get( 'Version' ),
 			true
 		);
 
@@ -836,7 +769,7 @@ if ( ! function_exists( 'pandora_enqueue_button_gradient_border_editor_assets' )
 				'pandora-button-gradient-border-extension',
 				get_theme_file_uri( 'build/extensions/button-gradient-border/index.css' ),
 				array(),
-				$assets['version']
+				wp_get_theme()->get( 'Version' )
 			);
 		}
 	}
@@ -863,7 +796,7 @@ if ( ! function_exists( 'pandora_enqueue_button_gradient_border_frontend_assets'
 			'pandora-button-gradient-border-extension-style',
 			get_theme_file_uri( 'build/extensions/button-gradient-border/style-index.css' ),
 			array(),
-			$assets['version']
+			wp_get_theme()->get( 'Version' )
 		);
 	}
 endif;
@@ -926,7 +859,7 @@ if ( ! function_exists( 'pandora_enqueue_query_carousel_editor_assets' ) ) :
 			'pandora-query-carousel-extension',
 			get_theme_file_uri( 'build/extensions/query-carousel/index.js' ),
 			$assets['dependencies'],
-			$assets['version'],
+			wp_get_theme()->get( 'Version' ),
 			true
 		);
 
@@ -936,7 +869,7 @@ if ( ! function_exists( 'pandora_enqueue_query_carousel_editor_assets' ) ) :
 				'pandora-query-carousel-extension',
 				get_theme_file_uri( 'build/extensions/query-carousel/index.css' ),
 				array(),
-				$assets['version']
+				wp_get_theme()->get( 'Version' )
 			);
 		}
 	}
@@ -964,7 +897,7 @@ if ( ! function_exists( 'pandora_enqueue_query_carousel_frontend_assets' ) ) :
 			'pandora-query-carousel-extension-style',
 			get_theme_file_uri( 'build/extensions/query-carousel/style-index.css' ),
 			array( 'pandora-swiper-style' ),
-			$assets['version']
+			wp_get_theme()->get( 'Version' )
 		);
 	}
 endif;
@@ -1001,7 +934,7 @@ if ( ! function_exists( 'pandora_enqueue_query_carousel_view_script' ) ) :
 			'pandora-query-carousel-view',
 			get_theme_file_uri( 'build/extensions/query-carousel/view.js' ),
 			array( 'pandora-swiper-script' ),
-			$assets['version'],
+			wp_get_theme()->get( 'Version' ),
 			true
 		);
 	}
@@ -1212,7 +1145,7 @@ if ( ! function_exists( 'pandora_enqueue_group_grid_columns_editor_assets' ) ) :
 			'pandora-group-grid-columns-extension',
 			get_theme_file_uri( 'build/extensions/group-grid-columns/index.js' ),
 			$assets['dependencies'],
-			$assets['version'],
+			wp_get_theme()->get( 'Version' ),
 			true
 		);
 
@@ -1222,7 +1155,7 @@ if ( ! function_exists( 'pandora_enqueue_group_grid_columns_editor_assets' ) ) :
 				'pandora-group-grid-columns-extension',
 				get_theme_file_uri( 'build/extensions/group-grid-columns/index.css' ),
 				array(),
-				$assets['version']
+				wp_get_theme()->get( 'Version' )
 			);
 		}
 	}
@@ -1248,7 +1181,7 @@ if ( ! function_exists( 'pandora_enqueue_group_grid_columns_frontend_assets' ) )
 			'pandora-group-grid-columns-extension-style',
 			get_theme_file_uri( 'build/extensions/group-grid-columns/style-index.css' ),
 			array(),
-			$assets['version']
+			wp_get_theme()->get( 'Version' )
 		);
 	}
 endif;
@@ -1341,7 +1274,7 @@ if ( ! function_exists( 'pandora_enqueue_iconic_button_editor_assets' ) ) :
 			'pandora-iconic-button-extension',
 			get_theme_file_uri( 'build/extensions/iconic-button/index.js' ),
 			$assets['dependencies'],
-			$assets['version'],
+			wp_get_theme()->get( 'Version' ),
 			true
 		);
 
@@ -1351,7 +1284,7 @@ if ( ! function_exists( 'pandora_enqueue_iconic_button_editor_assets' ) ) :
 				'pandora-iconic-button-extension',
 				get_theme_file_uri( 'build/extensions/iconic-button/index.css' ),
 				array(),
-				$assets['version']
+				wp_get_theme()->get( 'Version' )
 			);
 		}
 	}
@@ -1378,7 +1311,7 @@ if ( ! function_exists( 'pandora_enqueue_iconic_button_frontend_assets' ) ) :
 			'pandora-iconic-button-extension-style',
 			get_theme_file_uri( 'build/extensions/iconic-button/style-index.css' ),
 			array(),
-			$assets['version']
+			wp_get_theme()->get( 'Version' )
 		);
 	}
 endif;
@@ -1605,7 +1538,7 @@ if ( ! function_exists( 'pandora_enqueue_iconlist_icon_position_editor_assets' )
 			'pandora-iconlist-icon-position-extension',
 			get_theme_file_uri( 'build/extensions/iconlist-icon-position/index.js' ),
 			$assets['dependencies'],
-			$assets['version'],
+			wp_get_theme()->get( 'Version' ),
 			true
 		);
 	}
@@ -1668,7 +1601,7 @@ if ( ! function_exists( 'pandora_enqueue_kadence_featured_bg_editor_assets' ) ) 
 			'pandora-kadence-featured-bg-extension',
 			get_theme_file_uri( 'build/extensions/kadence-featured-bg/index.js' ),
 			$assets['dependencies'],
-			$assets['version'],
+			wp_get_theme()->get( 'Version' ),
 			true
 		);
 
@@ -1678,7 +1611,7 @@ if ( ! function_exists( 'pandora_enqueue_kadence_featured_bg_editor_assets' ) ) 
 				'pandora-kadence-featured-bg-extension',
 				get_theme_file_uri( 'build/extensions/kadence-featured-bg/index.css' ),
 				array(),
-				$assets['version']
+				wp_get_theme()->get( 'Version' )
 			);
 		}
 	}
@@ -1704,7 +1637,7 @@ if ( ! function_exists( 'pandora_enqueue_kadence_featured_bg_frontend_assets' ) 
 			'pandora-kadence-featured-bg-extension-style',
 			get_theme_file_uri( 'build/extensions/kadence-featured-bg/style-index.css' ),
 			array(),
-			$assets['version']
+			wp_get_theme()->get( 'Version' )
 		);
 	}
 endif;
@@ -1770,3 +1703,200 @@ if ( ! function_exists( 'pandora_render_kadence_featured_bg' ) ) :
 	}
 endif;
 add_filter( 'render_block', 'pandora_render_kadence_featured_bg', 10, 2 );
+
+
+// =============================================================================
+// Kadence RowLayout — Overlay Image Extension
+// =============================================================================
+
+if ( ! function_exists( 'pandora_enqueue_kadence_overlay_editor_assets' ) ) :
+	/**
+	 * Enqueues the kadence-overlay extension script and editor stylesheet.
+	 */
+	function pandora_enqueue_kadence_overlay_editor_assets() {
+		$asset_file = get_theme_file_path( 'build/extensions/kadence-overlay/index.asset.php' );
+
+		if ( ! file_exists( $asset_file ) ) {
+			return;
+		}
+
+		$assets = require $asset_file;
+
+		wp_enqueue_script(
+			'pandora-kadence-overlay-extension',
+			get_theme_file_uri( 'build/extensions/kadence-overlay/index.js' ),
+			$assets['dependencies'],
+			wp_get_theme()->get( 'Version' ),
+			true
+		);
+
+		$editor_css = get_theme_file_path( 'build/extensions/kadence-overlay/index.css' );
+		if ( file_exists( $editor_css ) ) {
+			wp_enqueue_style(
+				'pandora-kadence-overlay-extension',
+				get_theme_file_uri( 'build/extensions/kadence-overlay/index.css' ),
+				array(),
+				wp_get_theme()->get( 'Version' )
+			);
+		}
+	}
+endif;
+add_action( 'enqueue_block_editor_assets', 'pandora_enqueue_kadence_overlay_editor_assets' );
+
+
+if ( ! function_exists( 'pandora_enqueue_kadence_overlay_frontend_assets' ) ) :
+	/**
+	 * Enqueues the kadence-overlay frontend stylesheet.
+	 */
+	function pandora_enqueue_kadence_overlay_frontend_assets() {
+		$asset_file = get_theme_file_path( 'build/extensions/kadence-overlay/index.asset.php' );
+		$style_file = get_theme_file_path( 'build/extensions/kadence-overlay/style-index.css' );
+
+		if ( ! file_exists( $asset_file ) || ! file_exists( $style_file ) ) {
+			return;
+		}
+
+		$assets = require $asset_file;
+
+		wp_enqueue_style(
+			'pandora-kadence-overlay-extension-style',
+			get_theme_file_uri( 'build/extensions/kadence-overlay/style-index.css' ),
+			array(),
+			wp_get_theme()->get( 'Version' )
+		);
+	}
+endif;
+add_action( 'enqueue_block_assets', 'pandora_enqueue_kadence_overlay_frontend_assets' );
+
+
+if ( ! function_exists( 'pandora_render_kadence_overlay' ) ) :
+	/**
+	 * Injects the `has-kadence-overlay` class and overlay CSS custom properties
+	 * into kadence/rowlayout blocks on the frontend when an overlay image is set.
+	 *
+	 * @param string $block_content The rendered block HTML.
+	 * @param array  $block         The block data including name and attributes.
+	 * @return string Modified block HTML.
+	 */
+	function pandora_render_kadence_overlay( $block_content, $block ) {
+		if ( 'kadence/rowlayout' !== ( $block['blockName'] ?? '' ) ) {
+			return $block_content;
+		}
+
+		$attrs     = $block['attrs'] ?? array();
+		$image_url = $attrs['kadenceOverlayImageUrl'] ?? '';
+
+		if ( empty( $image_url ) || empty( $block_content ) ) {
+			return $block_content;
+		}
+
+		$left = $attrs['kadenceOverlayLeft'] ?? '0px';
+		$top  = $attrs['kadenceOverlayTop']  ?? '0px';
+
+		$processor = new WP_HTML_Tag_Processor( $block_content );
+		if ( $processor->next_tag() ) {
+			$processor->add_class( 'has-kadence-overlay' );
+
+			$existing_style = $processor->get_attribute( 'style' ) ?? '';
+			$new_style      = rtrim( $existing_style, '; ' );
+			if ( $new_style ) {
+				$new_style .= ';';
+			}
+			$new_style .= '--pandora-koverlay-image:url(' . esc_url( $image_url ) . ')';
+			$new_style .= ';--pandora-koverlay-left:'  . esc_attr( $left );
+			$new_style .= ';--pandora-koverlay-top:'   . esc_attr( $top );
+			$processor->set_attribute( 'style', $new_style );
+
+			return $processor->get_updated_html();
+		}
+
+		return $block_content;
+	}
+endif;
+add_filter( 'render_block', 'pandora_render_kadence_overlay', 10, 2 );
+
+
+// =============================================================================
+// Kadence Column — Quote Area Extension
+// =============================================================================
+
+if ( ! function_exists( 'pandora_enqueue_kadence_quote_area_editor_assets' ) ) :
+	/**
+	 * Enqueues the kadence-quote-area extension script.
+	 * Runs on `enqueue_block_editor_assets` (editor only).
+	 */
+	function pandora_enqueue_kadence_quote_area_editor_assets() {
+		$asset_file = get_theme_file_path( 'build/extensions/kadence-quote-area/index.asset.php' );
+
+		if ( ! file_exists( $asset_file ) ) {
+			return;
+		}
+
+		$assets = require $asset_file;
+
+		wp_enqueue_script(
+			'pandora-kadence-quote-area-extension',
+			get_theme_file_uri( 'build/extensions/kadence-quote-area/index.js' ),
+			$assets['dependencies'],
+			wp_get_theme()->get( 'Version' ),
+			true
+		);
+	}
+endif;
+add_action( 'enqueue_block_editor_assets', 'pandora_enqueue_kadence_quote_area_editor_assets' );
+
+
+if ( ! function_exists( 'pandora_enqueue_kadence_quote_area_frontend_assets' ) ) :
+	/**
+	 * Enqueues the kadence-quote-area frontend stylesheet.
+	 * Runs on `enqueue_block_assets` (editor + front end).
+	 */
+	function pandora_enqueue_kadence_quote_area_frontend_assets() {
+		$asset_file = get_theme_file_path( 'build/extensions/kadence-quote-area/index.asset.php' );
+		$style_file = get_theme_file_path( 'build/extensions/kadence-quote-area/style-index.css' );
+
+		if ( ! file_exists( $asset_file ) || ! file_exists( $style_file ) ) {
+			return;
+		}
+
+		$assets = require $asset_file;
+
+		wp_enqueue_style(
+			'pandora-kadence-quote-area-extension-style',
+			get_theme_file_uri( 'build/extensions/kadence-quote-area/style-index.css' ),
+			array(),
+			wp_get_theme()->get( 'Version' )
+		);
+	}
+endif;
+add_action( 'enqueue_block_assets', 'pandora_enqueue_kadence_quote_area_frontend_assets' );
+
+
+if ( ! function_exists( 'pandora_render_kadence_quote_area' ) ) :
+	/**
+	 * Injects the `pandora-quote` class into kadence/column blocks on the
+	 * frontend when the `quoteAreaEnabled` attribute is true.
+	 *
+	 * @param string $block_content The rendered block HTML.
+	 * @param array  $block         The block data including name and attributes.
+	 * @return string Modified block HTML.
+	 */
+	function pandora_render_kadence_quote_area( $block_content, $block ) {
+		if ( 'kadence/column' !== ( $block['blockName'] ?? '' ) ) {
+			return $block_content;
+		}
+
+		if ( empty( $block['attrs']['quoteAreaEnabled'] ) || empty( $block_content ) ) {
+			return $block_content;
+		}
+
+		$processor = new WP_HTML_Tag_Processor( $block_content );
+		if ( $processor->next_tag() ) {
+			$processor->add_class( 'pandora-quote' );
+			return $processor->get_updated_html();
+		}
+
+		return $block_content;
+	}
+endif;
+add_filter( 'render_block', 'pandora_render_kadence_quote_area', 10, 2 );
