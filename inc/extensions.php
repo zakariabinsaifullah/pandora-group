@@ -1207,15 +1207,11 @@ if ( ! function_exists( 'pandora_render_iconic_button' ) ) :
 
 		// Build the icon markup and inject it before/after the link's inner content.
 		$icon_html = '<span class="pandora-icon-button-svg">' . wp_kses( $icon_svg, pandora_iconic_button_svg_kses_args() ) . '</span>';
-		$position  = $attrs['iconicButtonIconPosition'] ?? '';
 
 		$block_content = preg_replace_callback(
 			'/(<a[^>]*class="[^"]*wp-block-button__link[^"]*"[^>]*>)(.*?)(<\/a>)/s',
-			function ( $matches ) use ( $icon_html, $position ) {
+			function ( $matches ) use ( $icon_html ) {
 				$content = trim( $matches[2] );
-				if ( '' !== $position ) {
-					return $matches[1] . $icon_html . $content . $matches[3];
-				}
 				return $matches[1] . $content . $icon_html . $matches[3];
 			},
 			$block_content

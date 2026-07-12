@@ -1,0 +1,113 @@
+/* =============================================================================
+   Team Grid Shortcode — [pandora_team_grid]
+   ============================================================================= */
+
+.ptg-grid {
+	display: grid;
+	grid-template-columns: repeat(var(--ptg-columns, 3), 1fr);
+	gap: 40px 30px;
+}
+
+/* Card */
+.ptg-card {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	text-align: left;
+}
+
+/* Photo */
+.ptg-photo {
+	aspect-ratio: 4 / 3;
+	border-radius: 16px;
+	overflow: hidden;
+	background-color: #f0f0f0;
+}
+
+.ptg-photo img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.ptg-photo__placeholder {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #aaa;
+}
+
+.ptg-photo__placeholder svg {
+	width: 48px;
+	height: 48px;
+}
+
+/* Body */
+.ptg-body {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+/* Name + Designation group */
+.ptg-name-group {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.ptg-name {
+	margin: 0;
+	font-family: var(--wp--preset--font-family--satoshi, 'Satoshi', sans-serif);
+	font-size: 24px;
+	font-weight: 500;
+	line-height: 1.2;
+	color: var(--wp--preset--color--pandora-primary, #080046);
+}
+
+.ptg-designation {
+	margin: 0;
+	font-family: var(--wp--preset--font-family--dm-sans, 'DM Sans', sans-serif);
+	font-size: 18px;
+	font-weight: 400;
+	line-height: 1.4;
+	color: #4c4c4c;
+}
+
+/* Bio */
+.ptg-bio {
+	margin: 0;
+}
+
+/* LinkedIn */
+.ptg-linkedin {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 6px;
+	color: var(--wp--preset--color--pandora-primary, #080046);
+	transition: color 0.2s ease, background-color 0.2s ease;
+	text-decoration: none;
+}
+
+.ptg-linkedin:hover {
+	color: var(--wp--preset--color--pandora-studio, #8e44ad);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+	.ptg-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 560px) {
+	.ptg-grid {
+		grid-template-columns: 1fr;
+	}
+}

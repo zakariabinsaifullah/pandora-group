@@ -41,7 +41,7 @@
 /* ── Header ──────────────────────────────────────────────────────────────────── */
 
 .pandora-form-panel__header {
-    background: linear-gradient(104.04deg, #E040FB 0%, #2C57FF 100%);
+    background: linear-gradient(104.04deg, #e040fb 0%, #2c57ff 100%);
     color: #ffffff;
     display: flex;
     align-items: center;
@@ -95,7 +95,6 @@
     padding: 40px 32px 52px;
     -webkit-overflow-scrolling: touch;
 }
-
 
 .pandora-form-panel__title {
     font-size: clamp(24px, 6vw, 40px);
@@ -158,7 +157,7 @@ body.pandora-panel-open {
 }
 
 .gform_button.button {
-    background: linear-gradient(104.04deg, #E040FB 0%, #2C57FF 100%) !important;
+    background: linear-gradient(104.04deg, #e040fb 0%, #2c57ff 100%) !important;
     color: #ffffff !important;
     padding: 10px 24px !important;
     border: none !important;

@@ -32,3 +32,9 @@ require_once get_theme_file_path( 'inc/form.php' );       // Slide-in form panel
 
 // ── Shortcodes ─────────────────────────────────────────────────────────────────
 require_once get_theme_file_path( 'inc/shortcode.php' );  // Posts grid shortcode
+
+// ── Custom post types ──────────────────────────────────────────────────────────
+require_once get_theme_file_path( 'inc/team.php' );       // Team CPT
+
+// ── Admin pages ────────────────────────────────────────────────────────────────
+require_once get_theme_file_path( 'inc/shortcodes-reference.php' ); // Appearance → Pandora

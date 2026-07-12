@@ -489,4 +489,113 @@ if ( ! function_exists( 'pandora_posts_tabs_shortcode' ) ) :
 		return $html;
 	}
 endif;
+
+
+// =============================================================================
+// Team Grid Shortcode
+// Usage: [pandora_team_grid columns="3" members="1,2,3" order="ASC" orderby="menu_order"]
+// =============================================================================
+
+if ( ! function_exists( 'pandora_team_grid_enqueue_assets' ) ) :
+	function pandora_team_grid_enqueue_assets() {
+		wp_enqueue_style(
+			'pandora-team-grid',
+			get_theme_file_uri( 'assets/css/team-grid.css' ),
+			array(),
+			wp_get_theme()->get( 'Version' )
+		);
+	}
+endif;
+
+if ( ! function_exists( 'pandora_team_grid_shortcode' ) ) :
+	function pandora_team_grid_shortcode( $atts ) {
+		$atts = shortcode_atts(
+			array(
+				'columns' => '3',
+				'members' => '',
+				'order'   => 'ASC',
+				'orderby' => 'menu_order',
+			),
+			$atts,
+			'pandora_team_grid'
+		);
+
+		$columns = max( 1, absint( $atts['columns'] ) );
+		$order   = in_array( strtoupper( $atts['order'] ), array( 'ASC', 'DESC' ), true ) ? strtoupper( $atts['order'] ) : 'ASC';
+		$orderby = sanitize_key( $atts['orderby'] );
+
+		$query_args = array(
+			'post_type'      => 'pandora_team',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'order'          => $order,
+			'orderby'        => $orderby,
+			'no_found_rows'  => true,
+		);
+
+		if ( ! empty( $atts['members'] ) ) {
+			$ids = array_filter( array_map( 'absint', explode( ',', $atts['members'] ) ) );
+			if ( ! empty( $ids ) ) {
+				$query_args['post__in'] = $ids;
+				$query_args['orderby']  = 'post__in';
+			}
+		}
+
+		$query = new WP_Query( $query_args );
+
+		if ( ! $query->have_posts() ) {
+			return '';
+		}
+
+		pandora_team_grid_enqueue_assets();
+
+		$linkedin_svg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>';
+
+		$placeholder_svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>';
+
+		ob_start();
+		?>
+		<div class="ptg-grid" style="--ptg-columns:<?php echo $columns; ?>;">
+			<?php while ( $query->have_posts() ) : $query->the_post();
+				$post_id     = get_the_ID();
+				$designation = get_post_meta( $post_id, '_pandora_team_designation', true );
+				$bio         = get_post_meta( $post_id, '_pandora_team_bio', true );
+				$linkedin    = get_post_meta( $post_id, '_pandora_team_linkedin', true );
+				$has_photo   = has_post_thumbnail();
+			?>
+			<div class="ptg-card">
+				<div class="ptg-photo">
+					<?php if ( $has_photo ) : ?>
+						<?php the_post_thumbnail( 'large', array( 'alt' => esc_attr( get_the_title() ) ) ); ?>
+					<?php else : ?>
+						<div class="ptg-photo__placeholder"><?php echo $placeholder_svg; ?></div>
+					<?php endif; ?>
+				</div>
+
+				<div class="ptg-body">
+					<div class="ptg-name-group">
+						<h3 class="ptg-name"><?php echo esc_html( get_the_title() ); ?></h3>
+						<?php if ( $designation ) : ?>
+							<p class="ptg-designation"><?php echo esc_html( $designation ); ?></p>
+						<?php endif; ?>
+					</div>
+
+					<?php if ( $bio ) : ?>
+						<p class="ptg-bio"><?php echo esc_html( $bio ); ?></p>
+					<?php endif; ?>
+
+					<?php if ( $linkedin ) : ?>
+						<a class="ptg-linkedin" href="<?php echo esc_attr( $linkedin ); ?>" target="_blank" rel="noopener noreferrer" aria-label="<?php echo esc_attr( get_the_title() . ' on LinkedIn' ); ?>">
+							<?php echo $linkedin_svg; ?>
+						</a>
+					<?php endif; ?>
+				</div>
+			</div>
+			<?php endwhile; wp_reset_postdata(); ?>
+		</div>
+		<?php
+		return ob_get_clean();
+	}
+	add_shortcode( 'pandora_team_grid', 'pandora_team_grid_shortcode' );
+endif;
 add_shortcode( 'pandora_posts_tabs', 'pandora_posts_tabs_shortcode' );

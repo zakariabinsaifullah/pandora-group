@@ -10,8 +10,7 @@
 
 if ( ! function_exists( 'pandora_enqueue_styles' ) ) :
 	/**
-	 * Enqueues the theme stylesheets on the front end and registers
-	 * shared vendor assets (Swiper) that blocks can depend on.
+	 * Enqueues the theme stylesheet on the front end.
 	 */
 	function pandora_enqueue_styles() {
 		$theme_version = wp_get_theme()->get( 'Version' );
@@ -21,22 +20,6 @@ if ( ! function_exists( 'pandora_enqueue_styles' ) ) :
 			get_parent_theme_file_uri( 'style.css' ),
 			array(),
 			$theme_version
-		);
-
-		// Register Swiper so blocks can declare it as a dependency.
-		wp_register_style(
-			'pandora-swiper-style',
-			get_parent_theme_file_uri( 'assets/css/swiper-bundle.min.css' ),
-			array(),
-			$theme_version
-		);
-
-		wp_register_script(
-			'pandora-swiper-script',
-			get_parent_theme_file_uri( 'assets/js/swiper-bundle.min.js' ),
-			array(),
-			$theme_version,
-			true
 		);
 	}
 endif;

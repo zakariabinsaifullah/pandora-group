@@ -28,7 +28,7 @@
 .ipg-filter-btn {
     cursor: pointer;
     border: none;
-    background: #F4F7FF;
+    background: #f4f7ff;
     color: #080046;
     font-family: var(--wp--preset--font-family--dm-sans);
     font-size: 16px;
@@ -122,19 +122,17 @@
 .ipg-card__category {
     display: inline-block;
     align-self: flex-start;
-    background: #D4DDFF;
+    background: #d4ddff;
     color: #080046;
     padding: 4px 8px;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+    font-size: 14px;
+    font-weight: 400;
 }
 
 .ipg-card__title {
     margin: 0;
     font-family: var(--wp--preset--font-family--satoshi);
-    font-size: clamp(20px, 2.5vw, 32px);
+    font-size: clamp(24px, 2.5vw, 32px);
     font-weight: 500;
     line-height: 1.2;
     color: #080046;
@@ -144,6 +142,11 @@
     text-decoration: none;
     color: inherit;
     transition: color 0.2s ease;
+    font-family: var(--wp--preset--font-family--satoshi);
+    font-size: clamp(24px, 2.5vw, 32px);
+    font-weight: 500;
+    line-height: 1.2;
+    color: #080046;
 }
 
 .ipg-card__title a:hover {
@@ -152,7 +155,7 @@
 
 .ipg-card__excerpt {
     margin: 0;
-    color: #4C4C4C;
+    color: #4c4c4c;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
@@ -161,7 +164,7 @@
 
 .ipg-card__date {
     font-size: 14px;
-    color: #7F7F7F;
+    color: #7f7f7f;
 }
 
 /* =============================================================================
@@ -250,7 +253,7 @@
     display: inline-block;
     padding: 10px 24px;
     border-radius: 100px;
-    background: linear-gradient(104.04deg, #E040FB 0%, #2C57FF 100%);
+    background: linear-gradient(104.04deg, #e040fb 0%, #2c57ff 100%);
     color: #ffffff;
     font-family: var(--wp--preset--font-family--dm-sans);
     font-size: 18px;
@@ -261,7 +264,7 @@
 }
 
 .ipg-row__read-more:hover {
-    background: #0A005F;
+    background: #0a005f;
     color: #ffffff;
 }
 
@@ -282,7 +285,7 @@
    ============================================================================= */
 
 .ipg-pagination-wrap {
-    margin-top: 50px;
+    margin-top: 70px;
 }
 
 .ipg-pagination {
