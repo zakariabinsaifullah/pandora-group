@@ -13,7 +13,11 @@
         "anchor": true,
         "html": false
     },
-    "attributes": {},
+    "attributes": {
+        "customSvgCode": {
+            "type": "string"
+        }
+    },
     "textdomain": "pandora-group",
     "editorScript": "file:./index.js",
     "style": "file:./style-index.css"

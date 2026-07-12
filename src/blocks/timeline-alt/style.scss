@@ -1,0 +1,8 @@
+.wp-block-pandora-timeline-alt {
+    .pandora-timeline-alt {
+        display: flex;
+        flex-direction: column;
+        gap: var(--item-gap, 48px);
+        position: relative;
+    }
+}

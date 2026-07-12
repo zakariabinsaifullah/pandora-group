@@ -1,0 +1,35 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "pandora/timeline-alt-item",
+    "version": "1.0.0",
+    "title": "Timeline Alternating Item",
+    "category": "pandora",
+    "parent": ["pandora/timeline-alt"],
+    "icon": "star-filled",
+    "description": "Individual item for the alternating timeline block.",
+    "example": {},
+    "supports": {
+        "anchor": true,
+        "html": false
+    },
+    "attributes": {
+        "label": {
+            "type": "string"
+        },
+        "customSvgCode": {
+            "type": "string"
+        },
+        "isLast": {
+            "type": "boolean",
+            "default": false
+        },
+        "isEven": {
+            "type": "boolean",
+            "default": false
+        }
+    },
+    "textdomain": "pandora-group",
+    "editorScript": "file:./index.js",
+    "style": "file:./style-index.css"
+}

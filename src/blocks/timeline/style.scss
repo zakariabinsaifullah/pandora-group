@@ -1,14 +1,9 @@
 .wp-block-pandora-timeline {
     .pandora-timeline {
         display: flex;
-        flex-wrap: wrap;
-        gap: 0;
+        flex-direction: column;
+        gap: var(--item-gap, 32px);
         align-items: stretch;
-        position: relative;
-
-        @media (max-width: 767px) {
-            flex-direction: column;
-            gap: 16px;
-        }
+        position: relative
     }
 }
