@@ -41,7 +41,7 @@
 /* ── Header ──────────────────────────────────────────────────────────────────── */
 
 .pandora-form-panel__header {
-    background: #009ada;
+    background: linear-gradient(104.04deg, #E040FB 0%, #2C57FF 100%);
     color: #ffffff;
     display: flex;
     align-items: center;
@@ -96,73 +96,12 @@
     -webkit-overflow-scrolling: touch;
 }
 
-/* ── Tab nav ────────────────────────────────────────────────────────────────── */
-
-.pandora-form-panel__tabs {
-    display: flex;
-    justify-content: center;
-    background: #f4eddb;
-    border-radius: 50px;
-    padding: 8px;
-    margin: 0 auto 30px;
-    max-width: 360px;
-    gap: 4px;
-}
-
-.pandora-form-panel__tab {
-    flex: 1;
-    background: transparent;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 50px;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 1.2;
-    color: #0d1b2a;
-    min-height: 42px;
-    cursor: pointer;
-    transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        box-shadow 0.2s ease;
-    font-family: inherit;
-}
-
-.pandora-form-panel__tab:hover {
-    color: #0d1b2a;
-}
-
-.pandora-form-panel__tab:focus-visible {
-    outline: 2px solid #c9a84c;
-    outline-offset: 2px;
-}
-
-.pandora-form-panel__tab.is-active {
-    background: #ffffff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    color: #0d1b2a;
-}
-
-/* ── Tab panels ─────────────────────────────────────────────────────────────── */
-
-.pandora-form-panel__panel[hidden] {
-    display: none;
-}
-
-.pandora-form-panel__calendly {
-    margin-top: 8px;
-}
-
-.pandora-form-panel__calendly iframe {
-    display: block;
-    width: 100%;
-}
 
 .pandora-form-panel__title {
     font-size: clamp(24px, 6vw, 40px);
     font-weight: 400;
     line-height: 1.2;
-    color: #3b3b3b;
+    color: var(--wp--preset--color--pandora-primary);
     margin: 0 0 16px;
 }
 
@@ -188,10 +127,10 @@ body.pandora-panel-open {
 .gform-body.gform_body select {
     width: 100%;
     border-color: #d1d5db !important;
-    border-radius: 10px;
+    border-radius: 8px !important;
     min-height: 50px !important;
     font-size: 16px;
-    background: #f6f7f9 !important;
+    background: #ffffff !important;
     outline: none;
     box-shadow: none !important;
     transition:
@@ -201,7 +140,7 @@ body.pandora-panel-open {
 }
 
 .gfield_label {
-    color: #3b3b3b !important;
+    color: var(--wp--preset--color--pandora-primary) !important;
     font-weight: 400 !important;
 }
 
@@ -213,23 +152,24 @@ body.pandora-panel-open {
 .gform_body input:focus,
 .gform_body textarea:focus,
 .gform_body select:focus {
-    border-color: #9361a8 !important;
+    border-color: var(--wp--preset--color--pandora-studio) !important;
     box-shadow: none !important;
     outline: none !important;
 }
 
 .gform_button.button {
-    background: #9361a8 !important;
+    background: linear-gradient(104.04deg, #E040FB 0%, #2C57FF 100%) !important;
     color: #ffffff !important;
     padding: 10px 24px !important;
     border: none !important;
     border-radius: 50px !important;
     font-size: 16px !important;
     font-weight: 400 !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .gform_button.button:hover {
-    background: #754d86 !important;
+    background: var(--wp--preset--color--pandora-stratos) !important;
     color: #fff !important;
 }
 

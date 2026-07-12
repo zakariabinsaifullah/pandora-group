@@ -20,6 +20,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_action( 'wp_enqueue_scripts', 'pandora_form_panel_assets' );
 
 function pandora_form_panel_assets() {
+	// Only load assets when the panel will actually render.
+	if ( ! get_option( 'pandora_phone_number' ) && ! get_option( 'pandora_form_shortcode' ) ) {
+		return;
+	}
+
 	$version = wp_get_theme()->get( 'Version' );
 
 	wp_enqueue_style(
@@ -171,7 +176,7 @@ function pandora_form_render_page() {
 				<?php esc_html_e( 'Add the following ID as the href value on any link or button to open the slide-in form:', 'pandora-group' ); ?>
 			</p>
 			<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-				<code id="pandora-trigger-id" style="
+				<code style="
 					background: #1d2327;
 					color: #7dd3fc;
 					padding: 6px 14px;
@@ -182,12 +187,8 @@ function pandora_form_render_page() {
 					user-select: all;
 				">#pandora-contact</code>
 				<button
+					id="pandora-copy-trigger"
 					type="button"
-					onclick="
-						navigator.clipboard.writeText('#pandora-contact');
-						this.textContent = '✓ Copied!';
-						setTimeout(() => this.textContent = 'Copy', 2000);
-					"
 					style="
 						background: #2271b1;
 						color: #fff;
@@ -289,5 +290,46 @@ function pandora_form_render_page() {
 			<?php submit_button(); ?>
 		</form>
 	</div>
+
+	<script>
+	( function () {
+		var btn  = document.getElementById( 'pandora-copy-trigger' );
+		var text = '#pandora-contact';
+		if ( ! btn ) return;
+
+		function onSuccess() {
+			btn.textContent = 'Copied!';
+			setTimeout( function () { btn.textContent = 'Copy'; }, 2000 );
+		}
+
+		function onFail() {
+			btn.textContent = 'Failed';
+			setTimeout( function () { btn.textContent = 'Copy'; }, 2000 );
+		}
+
+		function fallback() {
+			var ta = document.createElement( 'textarea' );
+			ta.value = text;
+			ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0;';
+			document.body.appendChild( ta );
+			ta.focus();
+			ta.select();
+			try {
+				document.execCommand( 'copy' ) ? onSuccess() : onFail();
+			} catch ( e ) {
+				onFail();
+			}
+			document.body.removeChild( ta );
+		}
+
+		btn.addEventListener( 'click', function () {
+			if ( navigator.clipboard && navigator.clipboard.writeText ) {
+				navigator.clipboard.writeText( text ).then( onSuccess ).catch( fallback );
+			} else {
+				fallback();
+			}
+		} );
+	} )();
+	</script>
 	<?php
 }
